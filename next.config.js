@@ -6,6 +6,7 @@ const nextConfig = {
       "cdn.sanity.io",
       "res.cloudinary.com",
       "ui-avatars.com",
+      "images.freeimages.com",
     ],
     remotePatterns: [
       {

@@ -144,3 +144,12 @@
   transform: translateX(50%);
   font-size: 1.1rem;
 }
+
+#nprogress .bar {
+  height: 3px;
+}
+#nprogress .spinner-icon {
+  width: 25px;
+  height: 25px;
+  border: solid 3px transparent;
+}

@@ -1,15 +1,18 @@
+"use client";
 import Header from "@/components/normalComponents/Header";
 import MobileHeader from "@/components/normalComponents/mobileHeader";
 import ToastContainer from "@/components/ToastContainer";
-import { CookiesProvider } from "next-client-cookies/server";
 import ScrollToTop from "@/components/ScrollToTop";
 import { Inter } from "next/font/google";
-import "react-modal-video/css/modal-video.css";
-import "@/styles/index.css";
 import { Providers } from "@/app/providers";
 import Footer from "@/components/normalComponents/Footer";
+import SectionTitle from "@/components/Common/SectionTitle";
 import MarginWidthWrapper from "@/components/normalComponents/MarginWidthWrapper";
+import useTransition from "@/hooks/useTransition";
 import SideNav from "./components/SideNav";
+import { usePathname } from "next/navigation";
+import "react-modal-video/css/modal-video.css";
+import "@/styles/index.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +21,10 @@ export default function StudentLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const pathSegments = pathname.split("/").filter(Boolean);
+  const lastSegment = pathSegments[pathSegments.length - 1] || "";
+  useTransition();
   return (
     <html suppressHydrationWarning lang="en">
       <head>
@@ -99,9 +106,10 @@ export default function StudentLayout({
                       </defs>
                     </svg>
                   </div>
-                  <CookiesProvider>
-                    <main className="min-h-screen">{children}</main>
-                  </CookiesProvider>
+                  <main className="min-h-screen">
+                    <SectionTitle title={lastSegment} />
+                    {children}
+                  </main>
                 </div>
                 <ScrollToTop />
                 <Footer />

@@ -23,6 +23,6 @@
       }
     ]
   },
-  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx", "app/student/dashboard/components/contexts/SidebarContext.js"],
+  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

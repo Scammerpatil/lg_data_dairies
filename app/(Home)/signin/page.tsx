@@ -131,10 +131,10 @@ const SigninPage = () => {
                     Your Password
                   </label>
                   <OutlinedInput
-                    className="w-full rounded-sm border border-stroke bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                    id="outlined-adornment-password"
+                    className="h-[50px] w-full rounded-sm border border-stroke bg-[#f8f8f8] px-3 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
                     type={passwordVisibilty ? "text" : "password"}
                     value={user.password}
+                    placeholder="Enter your Password"
                     onChange={(e) =>
                       setUser({ ...user, password: e.target.value })
                     }
@@ -153,7 +153,6 @@ const SigninPage = () => {
                         </IconButton>
                       </InputAdornment>
                     }
-                    label="Password"
                   />
                 </div>
                 <div className="mb-8 flex flex-col justify-between sm:flex-row sm:items-center">

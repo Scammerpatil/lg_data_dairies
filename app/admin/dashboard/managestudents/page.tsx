@@ -125,7 +125,7 @@ const ManageStudents = () => {
                             <select
                               className="h-full w-full border-zinc-200 border-x-white bg-transparent px-4"
                               value={
-                                student.isApproved ? "Approved" : "Pending"
+                                student.isAdminApproved ? "Approved" : "Pending"
                               }
                               onChange={(e) =>
                                 handleApprovalChange(

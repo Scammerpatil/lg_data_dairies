@@ -34,12 +34,22 @@ export async function POST(request: NextRequest) {
     email === process.env.ADMIN_EMAIL &&
     password === process.env.ADMIN_PASSWORD
   ) {
-    const data = { email: process.env.ADMIN_EMAIL, role: "admin" };
+    const data = {
+      email: process.env.ADMIN_EMAIL,
+      role: "admin",
+      isAdminApproved: true,
+    };
     const token = generateToken(data);
     const response = NextResponse.json({
       route: "/admin/dashboard",
       message: "Login Success",
       success: true,
+      user: {
+        email: process.env.ADMIN_EMAIL,
+        role: "admin",
+        isAdminApproved: true,
+        name: "Admin",
+      },
     });
     setTokenCookie(response, token);
     return response;

@@ -1,5 +1,5 @@
-import Header from "./components/Header";
-import MobileHeader from "./components/mobileHeader";
+import Header from "@/components/normalComponents/Header";
+import MobileHeader from "@/components/normalComponents/mobileHeader";
 import ToastContainer from "@/components/ToastContainer";
 import { CookiesProvider } from "next-client-cookies/server";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -7,8 +7,8 @@ import { Inter } from "next/font/google";
 import "react-modal-video/css/modal-video.css";
 import "@/styles/index.css";
 import { Providers } from "../providers";
-import Footer from "./components/Footer";
-import MarginWidthWrapper from "./components/MarginWidthWrapper";
+import Footer from "@/components/normalComponents/Footer";
+import MarginWidthWrapper from "@/components/normalComponents/MarginWidthWrapper";
 import SideNav from "./components/SideNav";
 
 const inter = Inter({ subsets: ["latin"] });

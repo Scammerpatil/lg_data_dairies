@@ -12,42 +12,42 @@ import { SideNavItem } from "@/types/types";
 export const SIDENAV_ITEMS: SideNavItem[] = [
   {
     title: "Home",
-    path: "/lg/home",
+    path: "/teacher/dashboard",
     icon: <HomeIcon width="24" height="24" />,
   },
   {
     title: "Students",
-    path: "/lg/students",
+    path: "/teacher/students",
     icon: <Clipboard width="24" height="24" />,
     submenu: true,
     subMenuItems: [
-      { title: "Add Student", path: "/lg/students/add" },
-      { title: "Remove Student", path: "/lg/students/remove" },
+      { title: "Add Student", path: "/teacher/students/add" },
+      { title: "Remove Student", path: "/teacher/students/remove" },
     ],
   },
   {
     title: "Details",
-    path: "/lg/details",
+    path: "/teacher/details",
     icon: <Clipboard width="24" height="24" />,
     submenu: true,
     subMenuItems: [
-      { title: "Add Marks", path: "/lg/details/marks" },
-      { title: "Add Attendance", path: "/lg/details/attendance" },
+      { title: "Add Marks", path: "/teacher/details/marks" },
+      { title: "Add Attendance", path: "/teacher/details/attendance" },
     ],
   },
   {
     title: "Notices",
-    path: "/lg/notices",
+    path: "/teacher/notices",
     icon: <Bell width="24" height="24" />,
   },
   {
     title: "Messages",
-    path: "/lg/messages",
+    path: "/teacher/messages",
     icon: <Mail width="24" height="24" />,
   },
   {
     title: "Help",
-    path: "/lg/help",
+    path: "/teacher/help",
     icon: <HelpCircle width="24" height="24" />,
   },
 ];

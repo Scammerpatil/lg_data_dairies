@@ -18,7 +18,7 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    student.isApproved = isApproved;
+    student.isAdminApproved = isApproved;
     const updatedStudent = await student.save();
 
     if (updatedStudent) {

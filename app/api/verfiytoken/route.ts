@@ -1,4 +1,3 @@
-// pages/api/verifyToken.js
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 

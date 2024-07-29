@@ -279,11 +279,28 @@ const SignupPage = () => {
                     className="w-full rounded-sm border border-stroke bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
                   >
                     <option defaultValue="">Choose Your Department</option>
-                    <option value="Computer">Computer</option>
-                    <option value="aiml">AIML</option>
-                    <option value="ds">Computer Science & Engineering</option>
+                    <option value="computer">Computer Engineering</option>
+                    <option value="aiml">
+                      Artificial Intelligence and Machine Learning
+                    </option>
+                    <option value="ds">
+                      Computer Science & Engineering ( Data Science )
+                    </option>
                     <option value="entc">
-                      Electronics and Telecommunication
+                      Electronics & Telecommunication Engineering
+                    </option>
+                    <option value="mechanical">Mechanical Engineering</option>
+                    <option value="electrical">Electrical Engineering</option>
+                    <option value="civil">Civil Engineering</option>
+                    <option value="cs">Computer Science & Engineering</option>
+                    <option value="aid">
+                      Artificial Intelligence & Data Science
+                    </option>
+                    <option value="it">Information Technology</option>
+                    <option value="ash">Applied Sciences & Humanities</option>
+                    <option value="research">Research Center</option>
+                    <option value="mca">
+                      Master of Computer Application (MCA)
                     </option>
                   </select>
                 </div>
@@ -322,7 +339,7 @@ const SignupPage = () => {
                     Your Password{" "}
                   </label>
                   <OutlinedInput
-                    className="w-full rounded-sm border border-stroke bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                    className="h-[50px] w-full rounded-sm border border-stroke bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
                     id="outlined-adornment-password"
                     type={passwordVisibilty ? "text" : "password"}
                     value={user.password}

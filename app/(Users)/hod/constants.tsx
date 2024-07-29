@@ -11,12 +11,12 @@ import { SideNavItem } from "@/types/types";
 export const SIDENAV_ITEMS: SideNavItem[] = [
   {
     title: "Home",
-    path: "/hod/home",
+    path: "/hod/dashboard",
     icon: <HomeIcon width="24" height="24" />,
   },
   {
     title: "Manage LGs",
-    path: "/hod/manage-lgs",
+    path: "",
     icon: <Users width="24" height="24" />,
     submenu: true,
     subMenuItems: [

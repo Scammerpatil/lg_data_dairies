@@ -1,3 +1,4 @@
+"use client";
 import Header from "@/components/normalComponents/Header";
 import MobileHeader from "@/components/normalComponents/mobileHeader";
 import ToastContainer from "@/components/ToastContainer";
@@ -9,6 +10,7 @@ import { Providers } from "@/app/providers";
 import Footer from "@/components/normalComponents/Footer";
 import MarginWidthWrapper from "@/components/normalComponents/MarginWidthWrapper";
 import SideNav from "./components/SideNav";
+import useTransition from "@/hooks/useTransition";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,6 +19,7 @@ export default function StudentLayout({
 }: {
   children: React.ReactNode;
 }) {
+  useTransition();
   return (
     <html suppressHydrationWarning lang="en">
       <head>

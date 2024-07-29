@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import useScroll from "@/hooks/useSroll";
+import useScroll from "@/hooks/useScroll";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import ThemeToggler from "./ThemeToggler";
@@ -33,12 +33,12 @@ const Header = () => {
   const handleLogout = async () => {
     localStorage.removeItem("user");
     const response = axios.get("/api/logout");
-    router.push("/signin");
     toast.promise(response, {
       loading: "Logging out...",
       success: "Logged out successfully",
       error: "Failed to logout",
     });
+    router.push("/signin");
   };
   const [navbarOpen, setNavbarOpen] = useState(false);
   const navbarToggleHandler = () => {
@@ -230,9 +230,13 @@ const Header = () => {
                         <span className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-400 text-sm font-semibold dark:bg-slate-900">
                           <DropdownMenu>
                             <DropdownMenuTrigger>
-                              <image>
-                                https://ui-avatars.com/api/?name=John+Doe
-                              </image>
+                              <Image
+                                src="/images/avatar/avatar-1.jpg"
+                                alt="avatar"
+                                width={32}
+                                height={32}
+                                className="rounded-full"
+                              />
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
                               <DropdownMenuLabel>My Account</DropdownMenuLabel>

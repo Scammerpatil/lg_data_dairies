@@ -16,7 +16,14 @@ const teacherSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  studentUnder: [Student.schema],
+  studentUnder: [
+    {
+      type: Types.ObjectId,
+      ref: "Student",
+      required: false,
+      unique: false,
+    },
+  ],
   role: {
     type: String,
     default: "teacher",
@@ -30,6 +37,10 @@ const teacherSchema = new mongoose.Schema({
     default: false,
   },
   isAdminApproved: {
+    type: Boolean,
+    default: false,
+  },
+  isLG: {
     type: Boolean,
     default: false,
   },

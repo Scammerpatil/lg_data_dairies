@@ -1,7 +1,10 @@
+"use client";
+import ToastContainer from "@/components/ToastContainer";
 import { Providers } from "@/app/providers";
 import Header from "./Header";
 import "@/styles/index.css";
 import { Inter } from "next/font/google";
+import useTransition from "@/hooks/useTransition";
 
 const inter = Inter({ subsets: ["latin"] });
 export default function RootLayout({
@@ -9,6 +12,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  useTransition();
   return (
     <html suppressHydrationWarning lang="en">
       <head>
@@ -16,8 +20,9 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body className={`bg-[#FCFCFC] dark:bg-black ${inter.className}`}>
-        <div className="flex flex-col">
+        <div className="flex max-h-screen flex-col">
           <Header />
+          <ToastContainer />
           <Providers>{children}</Providers>
         </div>
       </body>

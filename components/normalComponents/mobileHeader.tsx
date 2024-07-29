@@ -1,15 +1,31 @@
 "use client";
 
 import React, { ReactNode, useEffect, useRef, useState } from "react";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-import { SIDENAV_ITEMS } from "../../app/(Users)/student/constants";
 import { SideNavItem } from "@/types/types";
 import { motion, useCycle } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import ThemeToggler from "@/components/Header/ThemeToggler";
+
+// Dynamically import SIDENAV_ITEMS based on route
+const loadSidenavItems = async (pathname: string) => {
+  let module: any;
+
+  // Determine which module to load based on the general part of the pathname
+  if (pathname.includes("/student")) {
+    module = await import("@/app/(Users)/student/constants");
+  } else if (pathname.includes("/teacher")) {
+    module = await import("@/app/(Users)/teacher/constants");
+  } else if (pathname.includes("/hod")) {
+    module = await import("@/app/(Users)/hod/constants");
+  } else if (pathname.includes("/admin")) {
+    module = await import("@/app/admin/constants");
+  } else {
+    module = await import("@/app/(Users)/student/constants");
+  }
+
+  return module.SIDENAV_ITEMS || [];
+};
 
 type MenuItemWithSubMenuProps = {
   item: SideNavItem;
@@ -37,9 +53,20 @@ const sidebar = {
 
 const MobileHeader = () => {
   const pathname = usePathname();
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const { height } = useDimensions(containerRef);
   const [isOpen, toggleOpen] = useCycle(false, true);
+  const [sidenavItems, setSidenavItems] = useState<SideNavItem[]>([]);
+
+  useEffect(() => {
+    const fetchSidenavItems = async () => {
+      console.log("Fetching sidenav items for", pathname);
+      const items = await loadSidenavItems(pathname);
+      setSidenavItems(items);
+    };
+
+    fetchSidenavItems();
+  }, [pathname]);
 
   return (
     <motion.nav
@@ -57,10 +84,10 @@ const MobileHeader = () => {
       />
       <motion.ul
         variants={variants}
-        className="absolute grid max-h-screen w-full gap-3 overflow-y-auto px-10 py-16"
+        className="absolute grid max-h-screen w-full gap-3 overflow-y-auto px-6 py-16"
       >
-        {SIDENAV_ITEMS.map((item, idx) => {
-          const isLastItem = idx === SIDENAV_ITEMS.length - 1;
+        {sidenavItems.map((item, idx) => {
+          const isLastItem = idx === sidenavItems.length - 1;
 
           return (
             <div key={idx}>
@@ -71,8 +98,8 @@ const MobileHeader = () => {
                   <Link
                     href={item.path}
                     onClick={() => toggleOpen()}
-                    className={`flex w-full text-2xl ${
-                      item.path === pathname ? "font-bold" : ""
+                    className={`flex w-full text-lg ${
+                      item.path === pathname ? "font-semibold" : "font-medium"
                     }`}
                   >
                     {item.title}
@@ -94,17 +121,17 @@ const MobileHeader = () => {
 
 export default MobileHeader;
 
-const MenuToggle = ({ toggle }: { toggle: any }) => (
+const MenuToggle = ({ toggle }: { toggle: () => void }) => (
   <button
     onClick={toggle}
-    className="pointer-events-auto absolute right-4 top-[4px] z-30 rounded-md bg-white p-2 dark:bg-zinc-100"
+    className="pointer-events-auto absolute right-4 top-4 z-30 rounded-md bg-white p-2 dark:bg-zinc-100"
   >
     <svg
       width="23"
       height="23"
       viewBox="0 0 23 23"
-      className="text-white dark:text-dark"
-      fill="#fff"
+      className="text-black dark:text-white"
+      fill="#000"
     >
       <Path
         variants={{
@@ -132,9 +159,9 @@ const MenuToggle = ({ toggle }: { toggle: any }) => (
 
 const Path = (props: any) => (
   <motion.path
-    fill="transparent"
+    fill="none"
     strokeWidth="2"
-    stroke="hsl(0, 0%, 18%)"
+    stroke="currentColor"
     strokeLinecap="round"
     {...props}
   />
@@ -165,42 +192,40 @@ const MenuItemWithSubMenu: React.FC<MenuItemWithSubMenuProps> = ({
     <>
       <MenuItem>
         <button
-          className="flex w-full text-lg"
+          className="flex w-full items-center justify-between text-lg"
           onClick={() => setSubMenuOpen(!subMenuOpen)}
         >
-          <div className="flex w-full flex-row items-center justify-between">
-            <span
-              className={`${pathname.includes(item.path) ? "font-medium" : ""}`}
-            >
-              {item.title}
-            </span>
-            <div className={`${subMenuOpen && "rotate-180"}`}>
-              <ChevronDown width="24" height="24" />
-            </div>
-          </div>
+          <span
+            className={`${
+              pathname.includes(item.path) ? "font-semibold" : "font-medium"
+            }`}
+          >
+            {item.title}
+          </span>
+          <ChevronDown
+            width="24"
+            height="24"
+            className={`${subMenuOpen ? "rotate-180" : ""}`}
+          />
         </button>
       </MenuItem>
-      <div className="ml-2 mt-2 flex flex-col space-y-2">
-        {subMenuOpen && (
-          <>
-            {item.subMenuItems?.map((subItem, subIdx) => {
-              return (
-                <MenuItem key={subIdx}>
-                  <Link
-                    href={subItem.path}
-                    onClick={() => toggleOpen()}
-                    className={` ${
-                      subItem.path === pathname ? "font-medium" : ""
-                    }`}
-                  >
-                    {subItem.title}
-                  </Link>
-                </MenuItem>
-              );
-            })}
-          </>
-        )}
-      </div>
+      {subMenuOpen && (
+        <div className="ml-4 mt-2 flex flex-col space-y-2">
+          {item.subMenuItems?.map((subItem, subIdx) => (
+            <MenuItem key={subIdx}>
+              <Link
+                href={subItem.path}
+                onClick={() => toggleOpen()}
+                className={`text-sm ${
+                  subItem.path === pathname ? "font-semibold" : "font-medium"
+                }`}
+              >
+                {subItem.title}
+              </Link>
+            </MenuItem>
+          ))}
+        </div>
+      )}
     </>
   );
 };
@@ -232,8 +257,11 @@ const variants = {
   },
 };
 
-const useDimensions = (ref: any) => {
-  const dimensions = useRef({ width: 0, height: 0 });
+const useDimensions = (ref: React.RefObject<HTMLDivElement>) => {
+  const dimensions = useRef<{ width: number; height: number }>({
+    width: 0,
+    height: 0,
+  });
 
   useEffect(() => {
     if (ref.current) {
