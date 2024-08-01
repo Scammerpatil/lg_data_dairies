@@ -105,11 +105,21 @@ const ApproveLG = () => {
       <div className={`${details ? "col-start-7 flex" : ""}`}>
         <Table aria-label="Approve Local Guardians">
           <TableHeader>
-            <TableColumn>#</TableColumn>
-            <TableColumn>Name</TableColumn>
-            <TableColumn>Email</TableColumn>
-            <TableColumn>Status</TableColumn>
-            <TableColumn>Actions</TableColumn>
+            <TableColumn align="start" className="text-start">
+              #
+            </TableColumn>
+            <TableColumn align="start" className="text-start">
+              Name
+            </TableColumn>
+            <TableColumn align="start" className="text-start">
+              Email
+            </TableColumn>
+            <TableColumn align="start" className="text-start">
+              Status
+            </TableColumn>
+            <TableColumn align="start" className="text-start">
+              Actions
+            </TableColumn>
           </TableHeader>
           <TableBody>
             {lgData.length > 0 ? (

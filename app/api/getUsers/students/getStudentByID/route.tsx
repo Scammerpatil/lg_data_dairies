@@ -7,7 +7,7 @@ dbConfig();
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const { id } = body;
-  const user = await Student.findById(id);
+  const user = await Student.findById(id).populate("lgTeacher");
   if (!user) {
     return NextResponse.json({ success: false, message: "User not found" });
   } else {

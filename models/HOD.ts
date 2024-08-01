@@ -25,6 +25,9 @@ const hodSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  profileImageUrl: {
+    type: String,
+  },
   isAdminApproved: {
     type: Boolean,
     default: false,

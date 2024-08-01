@@ -63,7 +63,7 @@ const DesktopHeader = () => {
   }, []);
 
   return (
-    <nav className="sticky top-0 flex items-center justify-between border-b bg-white transition-all dark:bg-[#1e232e]">
+    <nav className="wsticky top-0 z-50 flex items-center justify-between border-b bg-white transition-all dark:bg-[#1e232e]">
       <div
         className={cn("z-30 w-full transition-all lg:px-10", {
           "border-b backdrop-blur-lg": scrolled || selectedLayout,

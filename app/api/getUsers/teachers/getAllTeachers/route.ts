@@ -5,7 +5,7 @@ import dbConfig from "@/middlewares/db.config";
 dbConfig();
 
 export async function GET() {
-  const teachers = await Teacher.find();
+  const teachers = await Teacher.find().populate("studentUnder");
   if (!teachers) {
     return NextResponse.json({ success: false, message: "User not found" });
   } else {

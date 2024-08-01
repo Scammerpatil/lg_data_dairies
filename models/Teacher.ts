@@ -1,4 +1,4 @@
-import mongoose, { Types } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 import Student from "./Student";
 
 // Teacher Schema
@@ -18,10 +18,8 @@ const teacherSchema = new mongoose.Schema({
   },
   studentUnder: [
     {
-      type: Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Student",
-      required: false,
-      unique: false,
     },
   ],
   role: {
@@ -43,6 +41,9 @@ const teacherSchema = new mongoose.Schema({
   isLG: {
     type: Boolean,
     default: false,
+  },
+  profileImageUrl: {
+    type: String,
   },
 });
 const Teacher =

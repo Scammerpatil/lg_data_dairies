@@ -1,18 +1,65 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const termTestSchema = new mongoose.Schema({
+// Subschemas
+const termTestSchema = new Schema({
   testNumber: Number,
   marks: Number,
 });
 
-const semesterSchema = new mongoose.Schema({
+const semesterSchema = new Schema({
   semesterNumber: Number,
   termTests: [termTestSchema],
   endSemesterMarks: Number,
   attendance: Number,
 });
 
-const studentSchema = new mongoose.Schema({
+const hostelSchema = new Schema({
+  livingAtHostel: Boolean,
+  roomNumber: String,
+  currentAddress: String,
+});
+
+const parentDetailsSchema = new Schema({
+  name: String,
+  contactNumber: String,
+  occupation: String,
+  address: String,
+  email: String,
+});
+
+const academicRecordSchema = new Schema({
+  instituteName: String,
+  board: String,
+  yearOfAdmission: Number,
+  yearOfPassing: Number,
+  marksObtained: Number,
+});
+
+const competitionSchema = new Schema({
+  name: String,
+  result: String,
+});
+
+const internshipSchema = new Schema({
+  companyName: String,
+  duration: String,
+  role: String,
+});
+
+const healthSchema = new Schema({
+  majorHealthProblem: String,
+  sufferingFrom: {
+    name: String,
+    date: Date,
+  },
+  treatment: {
+    doctorName: String,
+    contactNumber: String,
+  },
+});
+
+// Main Student Schema
+const studentSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -29,14 +76,16 @@ const studentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  profileImageUrl: {
+    type: String,
+  },
   lgTeacher: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Teacher",
   },
   personalDetails: {
     photo: String,
     mobileNumber: String,
-    email: String,
     permanentAddress: String,
     gender: String,
     dob: Date,
@@ -47,27 +96,11 @@ const studentSchema = new mongoose.Schema({
     domicile: String,
     religion: String,
     caste: String,
-    hostel: {
-      livingAtHostel: Boolean,
-      roomNumber: String,
-      currentAddress: String,
-    },
+    hostel: hostelSchema,
   },
   parentDetails: {
-    father: {
-      name: String,
-      contactNumber: String,
-      occupation: String,
-      address: String,
-      email: String,
-    },
-    mother: {
-      name: String,
-      contactNumber: String,
-      occupation: String,
-      address: String,
-      email: String,
-    },
+    father: parentDetailsSchema,
+    mother: parentDetailsSchema,
   },
   bankDetails: {
     bankName: String,
@@ -75,27 +108,9 @@ const studentSchema = new mongoose.Schema({
     accountNumber: String,
   },
   academicDetails: {
-    ssc: {
-      instituteName: String,
-      board: String,
-      yearOfAdmission: Number,
-      yearOfPassing: Number,
-      marksObtained: Number,
-    },
-    hsc: {
-      instituteName: String,
-      board: String,
-      yearOfAdmission: Number,
-      yearOfPassing: Number,
-      marksObtained: Number,
-    },
-    diploma: {
-      instituteName: String,
-      board: String,
-      yearOfAdmission: Number,
-      yearOfPassing: Number,
-      marksObtained: Number,
-    },
+    ssc: academicRecordSchema,
+    hsc: academicRecordSchema,
+    diploma: academicRecordSchema,
     entranceExam: {
       name: String,
       marks: Number,
@@ -106,20 +121,10 @@ const studentSchema = new mongoose.Schema({
   },
   portfolioDetails: {
     skills: [String],
-    competitions: [{ name: String, result: String }],
-    internships: [{ companyName: String, duration: String, role: String }],
+    competitions: [competitionSchema],
+    internships: [internshipSchema],
   },
-  healthDetails: {
-    majorHealthProblem: String,
-    sufferingFrom: {
-      name: String,
-      date: Date,
-    },
-    treatment: {
-      doctorName: String,
-      contactNumber: String,
-    },
-  },
+  healthDetails: healthSchema,
   isVerified: {
     type: Boolean,
     default: false,

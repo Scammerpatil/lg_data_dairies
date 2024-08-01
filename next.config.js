@@ -7,6 +7,7 @@ const nextConfig = {
       "res.cloudinary.com",
       "ui-avatars.com",
       "images.freeimages.com",
+      "nextui.org",
     ],
     remotePatterns: [
       {
@@ -15,6 +16,9 @@ const nextConfig = {
         port: "",
       },
     ],
+  },
+  experimental: {
+    serverActions: true,
   },
 };
 

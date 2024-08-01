@@ -4,7 +4,7 @@ import Teacher from "@/models/Teacher";
 export async function POST(req: NextRequest) {
   const { department } = await req.json();
   try {
-    const teacher = await Teacher.find({ department });
+    const teacher = await Teacher.find({ department }).populate("studentUnder");
     if (!teacher) {
       return NextResponse.json(
         {
