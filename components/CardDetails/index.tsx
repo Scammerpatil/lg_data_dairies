@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardBody, Divider } from "@nextui-org/react";
-import { Contact, User, Users, BookOpen } from "lucide-react";
+import { Contact, User, Users, BookOpen, Home } from "lucide-react";
 
 const CardDetails = ({ teacher, student }) => {
   const [data, setData] = useState(teacher || student);
@@ -150,21 +150,56 @@ const CardDetails = ({ teacher, student }) => {
                 </p>
                 <p className="py-1 text-sm">
                   Phone No:{" "}
-                  <a href={`tel:${data.phoneNo}`}>{data.phoneNo || "N/A"}</a>
+                  <a href={`tel:${data.personalDetails?.mobileNumber}`}>
+                    {data.personalDetails?.mobileNumber || "N/A"}
+                  </a>
                 </p>
               </div>
               <Divider className="py-2" />
-              <p className="text-tiny flex gap-2 py-2 font-bold uppercase">
-                <BookOpen /> Academic Details
-              </p>
-              {/* Uncomment and map academic details */}
-              {/* 
-              {data.academicDetails?.map((detail, index) => (
-                <p key={index} className="py-1 text-sm">
-                  {detail.instituteName}: {detail.result || "N/A"}
+              <div className="flex-col">
+                <h1 className="flex gap-2 pb-1 text-xl font-semibold">
+                  <BookOpen /> Academic Details
+                </h1>
+                {data.academicDetails.ssc && (
+                  <p className="py-1 text-sm">
+                    SSC: {data.academicDetails.ssc.instituteName},{" "}
+                    {data.academicDetails.ssc.marksObtained || "N/A"}
+                  </p>
+                )}
+                {data.academicDetails.hsc && (
+                  <p className="py-1 text-sm">
+                    HSC: {data.academicDetails.hsc.instituteName},{" "}
+                    {data.academicDetails.hsc.marksObtained || "N/A"}
+                  </p>
+                )}
+                {data.academicDetails.diploma && (
+                  <p className="py-1 text-sm">
+                    Diploma: {data.academicDetails.diploma.instituteName},{" "}
+                    {data.academicDetails.diploma.marksObtained || "N/A"}
+                  </p>
+                )}
+                {data.academicDetails.entranceExam && (
+                  <p className="py-1 text-sm">
+                    Entrance Exam: {data.academicDetails.entranceExam.name},{" "}
+                    {data.academicDetails.entranceExam.marks || "N/A"}
+                  </p>
+                )}
+              </div>
+              <Divider className="py-2" />
+              <div className="flex-col">
+                <h1 className="flex gap-2 pb-1 text-xl font-semibold">
+                  <Home /> Hostel Details
+                </h1>
+                <p className="py-1 text-sm">
+                  Hostel Name: {data.hostelDetails?.hostelName || "N/A"}
                 </p>
-              ))} 
-              */}
+                <p className="py-1 text-sm">
+                  Room No: {data.hostelDetails?.roomNo || "N/A"}
+                </p>
+                <p className="py-1 text-sm">
+                  Floor: {data.hostelDetails?.floor || "N/A"}
+                </p>
+              </div>
             </>
           )}
         </div>

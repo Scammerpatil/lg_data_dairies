@@ -227,7 +227,7 @@ const AssignLG = () => {
                   <TableCell>{student.email}</TableCell>
                   <TableCell>
                     <Chip className="capitalize" size="sm" variant="flat">
-                      {student.lgTeacher !== null
+                      {student.lgTeacher && student.lgTeacher !== null
                         ? student.lgTeacher.name
                         : "Pending"}{" "}
                     </Chip>

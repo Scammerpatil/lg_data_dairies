@@ -19,11 +19,6 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
     title: "Students",
     path: "/teacher/students",
     icon: <Clipboard width="24" height="24" />,
-    submenu: true,
-    subMenuItems: [
-      { title: "Add Student", path: "/teacher/students/add" },
-      { title: "Remove Student", path: "/teacher/students/remove" },
-    ],
   },
   {
     title: "Details",
@@ -34,6 +29,11 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
       { title: "Add Marks", path: "/teacher/details/marks" },
       { title: "Add Attendance", path: "/teacher/details/attendance" },
     ],
+  },
+  {
+    title: "Leaves",
+    path: "/teacher/leaves",
+    icon: <UserPlus width="24" height="24" />,
   },
   {
     title: "Notices",

@@ -61,7 +61,7 @@ const ManageTeachers = () => {
     <div className="h-full">
       {loading && <div>Loading...</div>}
       <h1 className="pt-10 text-center text-3xl">Manage Your Teachers</h1>
-      <div className="flex max-h-96 flex-col p-10">
+      <div className="flex max-h-screen flex-col p-10">
         <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
           <h2 className="text-center text-xl">List of Teachers</h2>
           <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">

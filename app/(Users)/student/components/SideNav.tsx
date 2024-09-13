@@ -9,11 +9,11 @@ import { ChevronDown } from "lucide-react";
 
 const SideNav = () => {
   return (
-    <div className="fixed hidden h-screen flex-1 border-r bg-white dark:border-zinc-700 dark:bg-black md:flex md:w-60">
+    <div className="fixed hidden h-screen flex-1 border-r bg-white dark:border-zinc-700 dark:bg-black md:flex md:w-64">
       <div className="flex w-full flex-col space-y-6">
         <Link
-          href="/teachers/dashboard"
-          className="flex h-14 w-full flex-row items-center justify-center space-x-3 border-b border-zinc-200 dark:border-zinc-700 md:justify-start md:px-6"
+          href="/student/dashboard"
+          className="flex h-16 w-full flex-row items-center justify-center space-x-3 border-b border-zinc-200 dark:border-zinc-700 md:justify-start md:px-6"
         >
           <span className="h-7 w-7 rounded-lg bg-zinc-300 dark:bg-zinc-600" />
           <span className="hidden text-xl font-bold text-gray-800 dark:text-gray-200 md:flex">

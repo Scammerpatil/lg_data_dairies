@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { notification } from "@/helper/notification";
 
 const AddNotice = () => {
   const [title, setTitle] = useState("");
@@ -101,6 +102,7 @@ const AddNotice = () => {
     toast.promise(response, {
       loading: "Adding notice...",
       success: () => {
+        // notification();
         return "Notice added successfully!";
       },
       error: (error) => {

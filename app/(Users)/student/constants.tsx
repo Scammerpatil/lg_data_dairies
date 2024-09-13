@@ -11,11 +11,6 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
     title: "Details",
     path: "/student/details",
     icon: <User width="24" height="24" />,
-    submenu: true,
-    subMenuItems: [
-      { title: "View Details", path: "/student/details/view" },
-      { title: "Update Details", path: "/student/details/update" },
-    ],
   },
   {
     title: "Notices",
@@ -29,7 +24,6 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
     submenu: true,
     subMenuItems: [
       { title: "Apply Leave", path: "/student/leave/apply" },
-      { title: "On Duty Leave", path: "/student/leave/on-duty" },
       { title: "Leave Status", path: "/student/leave/status" },
     ],
   },

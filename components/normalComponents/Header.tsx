@@ -48,8 +48,10 @@ const DesktopHeader = () => {
   useEffect(() => {
     const fetchProfilePic = async () => {
       const user = JSON.parse(localStorage.getItem("user"));
+      console.log(user);
       setUser(user?.name);
-      if (user) {
+      setProfilePic(user?.profileImageUrl);
+      if (user && !user.profileImageUrl) {
         const name = user.name;
         const response = await axios.get(
           `https://ui-avatars.com/api/?name=${encodeURIComponent(
@@ -63,6 +65,7 @@ const DesktopHeader = () => {
   }, []);
 
   return (
+    
     <nav className="wsticky top-0 z-50 flex items-center justify-between border-b bg-white transition-all dark:bg-[#1e232e]">
       <div
         className={cn("z-30 w-full transition-all lg:px-10", {
@@ -118,7 +121,11 @@ const DesktopHeader = () => {
               <DropdownMenuContent className="w-72 rounded-lg bg-white p-4 shadow-lg dark:bg-[#1e232e]">
                 <div className="flex flex-col">
                   <Image
-                    src="https://images.freeimages.com/image/previews/374/instabutton-png-design-5690390.png?fmt=webp&w=500"
+                    src={
+                      profilePic
+                        ? profilePic
+                        : "https://images.freeimages.com/image/previews/374/instabutton-png-design-5690390.png?fmt=webp&w=500"
+                    }
                     height={50}
                     width={50}
                     alt="Profile Picture"

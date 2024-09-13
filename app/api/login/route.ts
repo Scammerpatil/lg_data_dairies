@@ -38,6 +38,8 @@ export async function POST(request: NextRequest) {
       email: process.env.ADMIN_EMAIL,
       role: "admin",
       isAdminApproved: true,
+      name: "Admin",
+      profileImageUrl: "https://sesrcp.in/Uploads/Logo/1595215490.png",
     };
     const token = generateToken(data);
     const response = NextResponse.json({
@@ -49,6 +51,7 @@ export async function POST(request: NextRequest) {
         role: "admin",
         isAdminApproved: true,
         name: "Admin",
+        profileImageUrl: "https://sesrcp.in/Uploads/Logo/1595215490.png",
       },
     });
     setTokenCookie(response, token);
@@ -64,6 +67,12 @@ export async function POST(request: NextRequest) {
     const user = await Model.findOne({ email });
     if (user) {
       const isMatch = await bcryptjs.compare(password, user.password);
+      if (role === "student") {
+        await user.populate("lgTeacher");
+      } else if (role === "teacher") {
+        await user.populate("studentUnder");
+      } else if (role === "hod") {
+      }
       if (isMatch) {
         const data = {
           id: user._id,

@@ -64,6 +64,9 @@ const studentSchema = new Schema({
     type: String,
     required: true,
   },
+  userName: {
+    type: String,
+  },
   prn: {
     type: Number,
   },

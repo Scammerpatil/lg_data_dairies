@@ -109,6 +109,9 @@ function adminDashboard() {
                           Name
                         </th>
                         <th scope="col" className="px-6 py-4">
+                          Department
+                        </th>
+                        <th scope="col" className="px-6 py-4">
                           Email
                         </th>
                         <th scope="col" className="px-6 py-4">
@@ -123,7 +126,7 @@ function adminDashboard() {
                           className={`border-b border-neutral-200 ${
                             index % 2 === 0
                               ? "bg-black/[0.02] dark:border-white/10"
-                              : "dark:bg-body-dark bg-white dark:border-white/10"
+                              : "dark:bg-body-dark bg-gray-light text-dark dark:border-white/10"
                           }`}
                         >
                           <td className="whitespace-nowrap px-6 py-4 font-medium">
@@ -131,6 +134,9 @@ function adminDashboard() {
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
                             {teacher.name}
+                          </td>
+                          <td className="whitespace-nowrap px-6 py-4 uppercase">
+                            {teacher.department}
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
                             {teacher.email}
@@ -163,6 +169,9 @@ function adminDashboard() {
                           Name
                         </th>
                         <th scope="col" className="px-6 py-4">
+                          Department
+                        </th>
+                        <th scope="col" className="px-6 py-4">
                           Email
                         </th>
                         <th scope="col" className="px-6 py-4">
@@ -177,7 +186,7 @@ function adminDashboard() {
                           className={`border-b border-neutral-200 ${
                             index % 2 === 0
                               ? "bg-black/[0.02] dark:border-white/10"
-                              : "dark:bg-body-dark bg-white dark:border-white/10"
+                              : "dark:bg-body-dark bg-gray-light text-dark dark:border-white/10"
                           }`}
                         >
                           <td className="whitespace-nowrap px-6 py-4 font-medium">
@@ -185,6 +194,9 @@ function adminDashboard() {
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
                             {student.name}
+                          </td>
+                          <td className="whitespace-nowrap px-6 py-4 uppercase">
+                            {student.department}
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
                             {student.email}

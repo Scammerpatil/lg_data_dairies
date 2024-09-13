@@ -8,6 +8,7 @@ const nextConfig = {
       "ui-avatars.com",
       "images.freeimages.com",
       "nextui.org",
+      "sesrcp.in",
     ],
     remotePatterns: [
       {

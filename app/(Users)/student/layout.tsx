@@ -2,14 +2,13 @@
 import Header from "@/components/normalComponents/Header";
 import MobileHeader from "@/components/normalComponents/mobileHeader";
 import ToastContainer from "@/components/ToastContainer";
-import { CookiesProvider } from "next-client-cookies/server";
 import ScrollToTop from "@/components/ScrollToTop";
 import { Inter } from "next/font/google";
 import "react-modal-video/css/modal-video.css";
 import "@/styles/index.css";
-import { Providers } from "../../providers";
-import Footer from "../../../components/normalComponents/Footer";
-import MarginWidthWrapper from "../../../components/normalComponents/MarginWidthWrapper";
+import { Providers } from "@/app/providers";
+import Footer from "@/components/normalComponents/Footer";
+import MarginWidthWrapper from "@/components/normalComponents/MarginWidthWrapper";
 import SideNav from "./components/SideNav";
 import useTransition from "@/hooks/useTransition";
 
