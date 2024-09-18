@@ -9,18 +9,40 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^6.1.0",
+    "axios": "^1.7.7",
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.5.0",
+    "ejs": "^3.1.10",
+    "install": "^0.13.0",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.441.0",
+    "mongoose": "^8.6.2",
+    "next": "14.2.11",
+    "next-auth": "^4.24.7",
+    "next-session": "^4.0.5",
+    "nodemailer": "^6.9.15",
+    "npm": "^10.8.3",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.11"
+    "react-hot-toast": "^2.4.1",
+    "typewriter-effect": "^2.21.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/ejs": "^3.1.5",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20",
+    "@types/nodemailer": "^6.4.15",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "daisyui": "^4.12.10",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.11",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.11"
+    "typescript": "^5"
   }
 }
