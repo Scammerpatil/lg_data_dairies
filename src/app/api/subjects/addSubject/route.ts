@@ -14,21 +14,17 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Convert semester to a number if it comes as a string
   const semesterNumber = parseInt(semester, 10);
-
-  // Find the department
   let departmentExists = await AcademicStructure.findOne({
     departmentName: department,
   });
 
   if (!departmentExists) {
-    // Create new department if it doesn't exist
     const newDepartment = new AcademicStructure({
       departmentName: department,
       semesters: [
         {
-          semesterNumber: semesterNumber, // Store as a number
+          semesterNumber: semesterNumber,
           subjects: [
             {
               name: subjectName,
@@ -41,13 +37,11 @@ export async function POST(req: NextRequest) {
     await newDepartment.save();
     return NextResponse.json({ message: "Subject added successfully" });
   } else {
-    // Find the semester in the existing department
     let semesterExists = departmentExists.semesters.find(
-      (sem: any) => sem.semesterNumber === semesterNumber // Compare with the correct type
+      (sem: any) => sem.semesterNumber === semesterNumber
     );
 
     if (!semesterExists) {
-      // If semester doesn't exist, add it
       departmentExists.semesters.push({
         semesterNumber: semesterNumber,
         subjects: [
@@ -58,7 +52,6 @@ export async function POST(req: NextRequest) {
         ],
       });
     } else {
-      // Check if the subject already exists in the semester
       const subjectExists = semesterExists.subjects.find(
         (sub: any) => sub.name === subjectName
       );
@@ -71,15 +64,11 @@ export async function POST(req: NextRequest) {
           { status: 409 }
         );
       }
-
-      // Add the new subject to the existing semester
       semesterExists.subjects.push({
         name: subjectName,
         type: subjectType,
       });
     }
-
-    // Mark the modified path so Mongoose knows to update the document
     departmentExists.markModified("semesters");
     await departmentExists.save();
 

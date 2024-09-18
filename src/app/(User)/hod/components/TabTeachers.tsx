@@ -187,7 +187,7 @@ const TabTeacher = () => {
         </tbody>
       </table>
       {/* Teacher Details Dialog */}
-      {<TeacherDetails teacher={teacherDetails} />}
+      {teacherDetails && <TeacherDetails teacher={teacherDetails} />}
     </div>
   );
 };
