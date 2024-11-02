@@ -15,10 +15,6 @@ const config: Config = {
     xl: "1200px",
     "2xl": "1400px",
   },
-  container: {
-    center: true,
-    padding: "1rem",
-  },
   extend: {
     colors: {
       background: "var(--background)",
@@ -42,7 +38,12 @@ const config: Config = {
   dropShadow: {
     three: "0px 5px 15px rgba(6, 8, 15, 0.05)",
   },
-  theme: {},
+  theme: {
+    container: {
+      center: true,
+      padding: "1rem",
+    },
+  },
   plugins: [daisyui],
   daisyui: {
     themes: true,

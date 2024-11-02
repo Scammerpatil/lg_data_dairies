@@ -37,7 +37,7 @@ const ThemeToggler = () => {
     { label: "Coffee", value: "coffee" },
     { label: "Winter", value: "winter" },
   ];
-  const [selectedTheme, setSelectedTheme] = useState<string>("");
+  const [selectedTheme, setSelectedTheme] = useState<string>("dark");
   const pathname = usePathname();
 
   useEffect(() => {
@@ -52,7 +52,6 @@ const ThemeToggler = () => {
 
   const handleThemeChange = (value: string) => {
     setSelectedTheme(value);
-    console.log(value);
     localStorage.setItem("theme", value);
   };
 
