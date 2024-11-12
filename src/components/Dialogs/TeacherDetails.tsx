@@ -1,4 +1,4 @@
-import { teacher } from "@/types/teacher";
+import { teacher } from "@/types/Teacher";
 
 const TeacherDetails = ({ teacher }: { teacher: teacher }) => {
   return (

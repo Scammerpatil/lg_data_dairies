@@ -1,4 +1,4 @@
-import { Student } from "@/types/student";
+import { Student } from "@/types/Student";
 
 // Complete `emptyStudent` function
 export const emptyStudent = (): Student => {

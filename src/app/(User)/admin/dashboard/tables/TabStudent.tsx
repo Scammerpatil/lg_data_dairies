@@ -1,4 +1,4 @@
-import { Student } from "@/types/student";
+import { Student } from "@/types/Student";
 import axios from "axios";
 import { Search } from "lucide-react";
 import { useState } from "react";
@@ -43,7 +43,7 @@ const TabStudent = ({ fromStudentTab }: { fromStudentTab: Boolean }) => {
 
     try {
       if ((await response) && value === "Approved") {
-        const approvalEmail = axios.post("/api/approvalemail", {
+        const approvalEmail = axios.post("/api/helper/approvalemail", {
           email: email,
         });
         toast.promise(approvalEmail, {

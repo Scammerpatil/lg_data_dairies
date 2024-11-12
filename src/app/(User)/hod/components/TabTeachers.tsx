@@ -1,20 +1,27 @@
 import TeacherDetails from "@/components/Dialogs/TeacherDetails";
-import { teacher } from "@/types/teacher";
+import { HOD } from "@/types/HOD";
+import { Teacher } from "@/types/Teacher";
 import axios from "axios";
 import { Check, Eye, Search, Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 
-let teacherPromise: Promise<teacher[]> | null = null;
-let cachedTeacher: teacher[] | null = null;
+let teacherPromise: Promise<Teacher[]> | null = null;
+let cachedTeacher: Teacher[] | null = null;
 
-const fetchTeacher = async (): Promise<teacher[]> => {
+const fetchTeacher = async ({
+  department,
+}: {
+  department: string;
+}): Promise<Teacher[]> => {
   if (cachedTeacher) {
     return cachedTeacher;
   }
   if (!teacherPromise) {
     teacherPromise = axios
-      .get("/api/users/teachers/getAllTeachers")
+      .post("/api/users/teachers/getTeacherByDepartment", {
+        department: department,
+      })
       .then((res) => {
         cachedTeacher = res.data.teachers;
         return res.data.teachers;
@@ -27,20 +34,20 @@ const fetchTeacher = async (): Promise<teacher[]> => {
   return teacherPromise;
 };
 
-const TabTeacher = () => {
-  const [teachers, setTeachers] = useState<teacher[]>([]);
+const TabTeacher = ({ user }: { user: HOD }) => {
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [teacherDetails, setTeacherDetails] = useState<teacher | null>(null);
+  const [teacherDetails, setTeacherDetails] = useState<Teacher | null>(null);
 
   useEffect(() => {
     const getTeachers = async () => {
-      const data = await fetchTeacher();
+      const data = await fetchTeacher({ department: user.department });
       setTeachers(data);
     };
     getTeachers();
   }, []);
 
-  const handleViewDetails = (teacher: teacher): void => {
+  const handleViewDetails = (teacher: Teacher): void => {
     setTeacherDetails(teacher);
     (
       document.getElementById("teacherDetails") as HTMLDialogElement
@@ -135,12 +142,7 @@ const TabTeacher = () => {
                   <div className="flex items-center gap-3">
                     <div className="avatar">
                       <div className="mask mask-squircle h-12 w-12">
-                        <img
-                          src={`https://img.daisyui.com/images/profile/demo/${
-                            index + 2
-                          }@94.webp`}
-                          alt="Avatar"
-                        />
+                        <img src={teacher.profileImageUrl} alt="Avatar" />
                       </div>
                     </div>
                     <div>

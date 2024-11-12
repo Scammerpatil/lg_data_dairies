@@ -2,7 +2,7 @@
 import React, { Suspense, useEffect, useState } from "react";
 import TableSkeleton from "@/components/Common/TableSkeleton";
 import LeaveTable from "./LeaveTable";
-import { Student } from "@/types/student";
+import { Student } from "@/types/Student";
 import { emptyStudent } from "@/helper/emptyStudent";
 
 const LeaveStatusPage = () => {

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import LastYear from "./LastYear";
 import SecondYear from "./SecondYear";
 import ThirdYear from "./ThirdYear";
-import { Student } from "@/types/student";
+import { Student } from "@/types/Student";
 import axios from "axios";
 
 const StundetInformation = () => {

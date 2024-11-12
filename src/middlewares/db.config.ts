@@ -1,3 +1,7 @@
+import AcademicStructure from "@/models/AcademicStructure";
+import HOD from "@/models/HOD";
+import Student from "@/models/Student";
+import Teacher from "@/models/Teacher";
 import mongoose from "mongoose";
 
 // Database Connection
@@ -15,6 +19,10 @@ const dbConfig = async () => {
   } catch (error) {
     console.log("Error: ", error);
   }
+  Student;
+  Teacher;
+  HOD;
+  AcademicStructure;
 };
 
 export default dbConfig;

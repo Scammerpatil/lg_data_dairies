@@ -1,22 +1,25 @@
 "use client";
 import ToastContainer from "@/components/ToastContainer";
 import SideNav from "../components/SideNav";
-import useUser from "@/hooks/useUser";
+import ScrollToTop from "@/components/ScrollToTop";
 import { SIDENAV_ITEMS } from "./constant";
+import { UserProvider } from "@/context/useAuth";
 import { useRouter } from "next/navigation";
 import { Inter } from "next/font/google";
 import "@/app/style.css";
-import ScrollToTop from "@/components/ScrollToTop";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+  return (
+    <UserProvider>
+      <MainContent>{children}</MainContent>
+    </UserProvider>
+  );
+};
+
+const MainContent = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const user = useUser();
   return (
     <html suppressHydrationWarning lang="en">
       <head>
@@ -31,4 +34,6 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

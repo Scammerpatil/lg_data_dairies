@@ -1,5 +1,5 @@
 import StudentDetails from "@/components/Dialogs/StudentDetails";
-import { Student } from "@/types/student";
+import { Student } from "@/types/Student";
 import { User } from "@/types/user";
 import axios from "axios";
 import { Eye, Search, Trash } from "lucide-react";

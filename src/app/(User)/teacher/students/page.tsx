@@ -2,7 +2,7 @@
 import React, { Suspense, useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Student } from "@/types/student";
+import { Student } from "@/types/Student";
 import TableSkeleton from "@/components/Common/TableSkeleton";
 import TableStudent from "./TableStudent";
 import { User } from "@/types/user";

@@ -1,6 +1,6 @@
-import { Student } from "./student";
+import { Student } from "./Student";
 
-export type teacher = {
+export type Teacher = {
   _id: string;
   name: string;
   department: string;

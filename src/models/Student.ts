@@ -1,15 +1,19 @@
 import mongoose, { Schema } from "mongoose";
 
-// Subschemas
 const termTestSchema = new Schema({
   testNumber: Number,
   marks: Number,
 });
 
-const semesterSchema = new Schema({
-  semesterNumber: Number,
+const subjectSchema = new Schema({
+  subjectName: String,
   termTests: [termTestSchema],
   endSemesterMarks: Number,
+});
+
+const semesterSchema = new Schema({
+  semesterNumber: Number,
+  subjects: [subjectSchema],
   attendance: Number,
 });
 
@@ -59,49 +63,17 @@ const healthSchema = new Schema({
 });
 
 const studentSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  userName: {
-    type: String,
-  },
-  prn: {
-    type: Number,
-    unique: true,
-    required: true,
-  },
-  rollNo: {
-    type: Number,
-  },
-  year: {
-    type: String,
-    required: true,
-  },
-  division: {
-    type: String,
-    required: true,
-  },
-  department: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    unique: true,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  profileImageUrl: {
-    type: String,
-  },
-  lgTeacher: {
-    type: Schema.Types.ObjectId,
-    ref: "Teacher",
-  },
+  name: { type: String, required: true },
+  userName: { type: String },
+  prn: { type: Number, unique: true, required: true },
+  rollNo: { type: Number },
+  year: { type: String, required: true },
+  division: { type: String, required: true },
+  department: { type: String, required: true },
+  email: { type: String, unique: true, required: true },
+  password: { type: String, required: true },
+  profileImageUrl: { type: String },
+  lgTeacher: { type: Schema.Types.ObjectId, ref: "Teacher", default: null },
   personalDetails: {
     photo: String,
     mobileNumber: String,
@@ -140,14 +112,8 @@ const studentSchema = new Schema({
     internships: [internshipSchema],
   },
   healthDetails: healthSchema,
-  isVerified: {
-    type: Boolean,
-    default: false,
-  },
-  isAdminApproved: {
-    type: Boolean,
-    default: false,
-  },
+  isVerified: { type: Boolean, default: false },
+  isAdminApproved: { type: Boolean, default: false },
 });
 
 const Student =

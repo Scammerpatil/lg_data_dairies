@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { Student } from "@/types/student";
+import { Student } from "@/types/Student";
 import { User } from "@/types/user";
 
 const leaveTypes = [

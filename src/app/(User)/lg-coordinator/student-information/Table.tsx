@@ -1,4 +1,4 @@
-import { Student } from "@/types/student";
+import { Student } from "@/types/Student";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 

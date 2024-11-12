@@ -1,5 +1,6 @@
 import { IconButton, InputAdornment, OutlinedInput } from "@mui/material";
 import axios from "axios";
+import { File as BufferFile } from "buffer";
 import { Eye, EyeOffIcon, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -16,9 +17,10 @@ type User = {
   year: string;
   emailVerified: boolean;
   isVerified: boolean;
+  profileImageUrl: string;
 };
 
-const SignUp = ({ router }: { router: any }) => {
+const SignUp = () => {
   // States
   const [user, setUser] = useState<User>({
     name: "",
@@ -30,12 +32,54 @@ const SignUp = ({ router }: { router: any }) => {
     prn: "",
     emailVerified: false,
     year: "",
+    profileImageUrl: "",
     isVerified: false,
     division: "",
   });
   const [disabled, setDisabled] = useState(true);
+  const [image, setImage] = useState<File | null>();
   const [passwordVisibilty, setPasswordVisibilty] = useState(false);
   const [otp, setOtp] = useState("");
+  const [dragging, setDragging] = useState(false);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
+  useEffect(() => {
+    if (image) {
+      const uploadImage = async () => {
+        const formData = new FormData();
+        formData.append("file", image as Blob);
+        const imageResponse = axios.post("/api/helper/upload-img", formData);
+        toast.promise(
+          imageResponse,
+          {
+            loading: "Uploading Image...",
+            success: (data: any) => {
+              setUser({ ...user, profileImageUrl: data.data.data.url });
+              console.log(user);
+              return "Image Uploaded Successfully";
+            },
+            error: (err) => `This just happened: ${err.response.data.error}`,
+          },
+          {
+            success: {
+              duration: 5000,
+              icon: "🔥",
+            },
+            error: {
+              duration: 5000,
+              icon: "😒",
+            },
+          }
+        );
+      };
+      uploadImage();
+    }
+  }, [image]);
 
   useEffect(() => {
     if (
@@ -45,13 +89,32 @@ const SignUp = ({ router }: { router: any }) => {
       user.department &&
       user.password.length >= 8 &&
       user.emailVerified &&
-      user.otp
+      user.otp &&
+      user.profileImageUrl
     ) {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
   }, [user]);
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragging(true);
+  };
+
+  const handleDragLeave = () => setDragging(false);
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith("image/")) {
+      setImage(file);
+    } else {
+      alert("Please drop an image file.");
+    }
+  };
 
   const handleSubmit = async () => {
     const responsePromise = axios.post("/api/auth/signup", user);
@@ -181,6 +244,39 @@ const SignUp = ({ router }: { router: any }) => {
                             Verify
                           </button>
                           <br />
+                        </div>
+                      </div>
+                      {/* Profile Image Url */}
+                      <div className="mb-8">
+                        <label
+                          htmlFor="profileImageUrl"
+                          className="mb-3 block text-sm text-base-content"
+                        >
+                          Upload Your Nice Photo
+                        </label>
+                        <div
+                          onDragOver={handleDragOver}
+                          onDragLeave={handleDragLeave}
+                          onDrop={handleDrop}
+                          className={`w-full rounded-sm border border-stroke bg-base-300 p-6 text-base-content text-center outline-none transition-all duration-300 ${
+                            dragging
+                              ? "border-primary bg-base-200"
+                              : "border-stroke"
+                          }`}
+                        >
+                          {image ? (
+                            <p>{image.name}</p>
+                          ) : (
+                            <p>Drag & drop an image here, or click to upload</p>
+                          )}
+                          <input
+                            type="file"
+                            name="profileImageUrl"
+                            id="profileImageUrl"
+                            className="hidden"
+                            accept="image/* .png .jpeg .jpg"
+                            onChange={handleImageChange}
+                          />
                         </div>
                       </div>
                       {/* Department */}

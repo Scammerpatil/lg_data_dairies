@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Student } from "@/types/student";
+import { Student } from "@/types/Student";
 import axios from "axios";
 import { ArrowDown, ArrowUp } from "lucide-react";
 

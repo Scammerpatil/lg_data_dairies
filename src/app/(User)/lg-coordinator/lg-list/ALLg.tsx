@@ -1,5 +1,5 @@
 "use client";
-import { teacher } from "@/types/teacher";
+import { teacher } from "@/types/Teacher";
 import { User } from "@/types/user";
 import axios from "axios";
 import { ArrowDown, ArrowUp, ChevronDown, Search } from "lucide-react";

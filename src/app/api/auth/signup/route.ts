@@ -4,7 +4,6 @@ import dbConfig from "@/middlewares/db.config";
 import Student from "@/models/Student";
 import Teacher from "@/models/Teacher";
 import HOD from "@/models/HOD";
-import { emptyStudent } from "@/helper/emptyStudent";
 
 dbConfig();
 
@@ -20,11 +19,10 @@ export async function POST(req: NextRequest) {
       isVerified,
       emailVerified,
       prn,
+      profileImageUrl,
       division,
       year,
     } = body;
-
-    console.log(body);
 
     if (!name || !email || !department || !role || !password) {
       return NextResponse.json(
@@ -35,7 +33,7 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    // Checking if the user already exists
+
     const studentExists = await Student.findOne({ email });
     const teacherExists = await Teacher.findOne({ email });
     const hODExists = await HOD.findOne({ email });
@@ -58,9 +56,10 @@ export async function POST(req: NextRequest) {
         name,
         email,
         department,
+        profileImageUrl,
         role: "teacher",
         password: hashedPassword,
-        isVerified,
+        isVerified: true,
       });
       const newTeacher = await teacher.save();
       if (newTeacher) {
@@ -83,6 +82,7 @@ export async function POST(req: NextRequest) {
         lgTeacher: null,
         year,
         division,
+        profileImageUrl,
         role: "student",
         password: hashedPassword,
         isVerified: emailVerified,
@@ -106,8 +106,9 @@ export async function POST(req: NextRequest) {
         email,
         department,
         role: "hod",
+        profileImageUrl,
         password: hashedPassword,
-        isVerified,
+        isVerified: true,
       });
       const newHOD = await hod.save();
       if (newHOD) {

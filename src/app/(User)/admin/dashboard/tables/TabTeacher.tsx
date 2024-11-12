@@ -1,4 +1,4 @@
-import { teacher as Teacher } from "@/types/teacher";
+import { Teacher } from "@/types/Teacher";
 import axios from "axios";
 import { Search } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -31,27 +31,41 @@ const TabTeacher = ({ fromTeacherTab }: { fromTeacherTab: Boolean }) => {
     email: string
   ) => {
     try {
-      const response = axios.put("/api/getUsers/teachers/updateTeacher", {
+      const response = axios.put("/api/users/teachers/updateTeacher", {
         _id,
         isApproved: value === "Approved",
       });
       toast.promise(response, {
         loading: "Updating Teacher...",
-        success: "Teacher Updated Successfully",
+        success: () => {
+          setTeachers((prev) =>
+            prev.map((teacher) =>
+              teacher._id === _id
+                ? { ...teacher, isAdminApproved: value === "Approved" }
+                : teacher
+            )
+          );
+          approvalEmail(email, value);
+          return "Teacher Updated Successfully";
+        },
         error: "Error Updating Teacher",
       });
-
-      if (value === "Approved") {
-        const approvalEmail = axios.post("/api/approvalemail", { email });
-        toast.promise(approvalEmail, {
-          loading: "Sending Approval Email...",
-          success: "Approval Email Sent Successfully",
-          error: "Error Sending Approval Email",
-        });
-      }
     } catch (error) {
       console.error("Error updating teacher approval:", error);
       toast.error("Failed to update teacher");
+    }
+  };
+
+  const approvalEmail = (email: string, value: string) => {
+    if (value === "Approved") {
+      const approvalEmail = axios.post("/api/helper/approvalemail", {
+        email,
+      });
+      toast.promise(approvalEmail, {
+        loading: "Sending Approval Email...",
+        success: "Approval Email Sent Successfully",
+        error: "Error Sending Approval Email",
+      });
     }
   };
 

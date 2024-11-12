@@ -1,16 +1,18 @@
 "use client";
-import { Student } from "@/types/student";
+import useUser from "@/hooks/useUser";
+import { Student } from "@/types/Student";
 import axios from "axios";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function StudentForm() {
+  const user: Student = useUser();
   const [student, setStudent] = useState<Student>({
     _id: "",
     name: "",
     userName: "",
     prn: 0,
-    year: 0,
+    year: "",
     division: "",
     department: "",
     email: "",
@@ -92,14 +94,35 @@ export default function StudentForm() {
     isVerified: false,
     isAdminApproved: false,
   });
+  useEffect(() => {
+    if (user) {
+      setStudent((prevStudent) => ({
+        ...prevStudent,
+        _id: user._id || "",
+        name: user.name || "",
+        userName: user.userName || "",
+        prn: user.prn || 0,
+        year: user.year || "",
+        division: user.division || "",
+        department: user.department || "",
+        email: user.email || "",
+        password: user.password || "",
+        profileImageUrl: user.profileImageUrl || "",
+        engineeringDetails: user.engineeringDetails || { semesters: [] },
+        portfolioDetails: user.portfolioDetails || {
+          skills: [],
+          competitions: [],
+          internships: [],
+        },
+        isVerified: user.isVerified || false,
+        isAdminApproved: user.isAdminApproved || false,
+      }));
+    }
+  }, [user]);
 
   const [imgSrc, setImgSrc] = useState<string>();
-  const [nationalities, setNationalities] = useState<string[]>([]);
-  const [bloodGroups, setBloodGroups] = useState<string[]>([]);
-  const [gender, setGender] = useState<string[]>([]);
-  const [maritalStatus, setmaritalStatus] = useState<string[]>([]);
   const [profileImage, setProfileImage] = useState<File>();
-  const [loading, setLoading] = useState<boolean>();
+  const [loading, setLoading] = useState<boolean>(false);
   const fileInput = useRef();
 
   const handleInputChange = (
@@ -111,14 +134,59 @@ export default function StudentForm() {
       [name]: value,
     }));
   };
+
+  const handleNestedInputChange = <
+    T extends keyof Student,
+    K extends keyof Student[T]
+  >(
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    section: T,
+    field: K
+  ) => {
+    const { value } = e.target;
+
+    setStudent((prevStudent) => ({
+      ...prevStudent,
+      [section]: {
+        ...prevStudent[section],
+        [field]: value,
+      },
+    }));
+  };
+
+  const handleNestedNestedInputChange = <
+    T extends keyof Student,
+    K extends keyof Student[T],
+    L extends keyof Student[T][K]
+  >(
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    section: T,
+    subSection: K,
+    field: L
+  ) => {
+    const { value } = e.target;
+
+    setStudent((prevStudent) => ({
+      ...prevStudent,
+      [section]: {
+        ...prevStudent[section],
+        [subSection]: {
+          ...prevStudent[section][subSection],
+          [field]: value,
+        },
+      },
+    }));
+  };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
-      setProfileImage(e.target?.files[0]);
+      setProfileImage(e.target.files[0]);
       reader.onload = (e) => setImgSrc(e.target?.result as string);
       reader.readAsDataURL(e.target.files[0]);
     }
   };
+
   const handleUploadImage = async () => {
     if (profileImage) {
       setLoading(true);
@@ -140,7 +208,7 @@ export default function StudentForm() {
           setLoading(false);
           return "Image uploaded successfully!";
         },
-        error: (error) => {
+        error: () => {
           setLoading(false);
           return "An error occurred while uploading the image.";
         },
@@ -148,9 +216,31 @@ export default function StudentForm() {
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const response = axios.put("/api/users/students/updateAllDetails", {
+      student,
+      _id: student._id,
+    });
+    toast.promise(response, {
+      loading: "Saving changes...",
+      success: (data) => {
+        sessionStorage.removeItem("user");
+        sessionStorage.setItem("user", JSON.stringify(data.data.student));
+        return "Changes saved successfully!";
+      },
+      error: () => "An error occurred while saving changes.",
+    });
+  };
+
   return (
-    <form className="container mx-auto p-4">
-      {/* Personal Details */}
+    <form
+      className="container mx-auto p-4"
+      onSubmit={(e) => {
+        handleSubmit(e);
+      }}
+    >
+      {/* Profile Image */}
       <div className="my-6">
         <div className="flex items-center gap-4">
           <img
@@ -189,67 +279,92 @@ export default function StudentForm() {
             >
               Reset
             </button>
-            <p className="mt-4 text-sm text-gray-600">
-              Allowed PNG or JPEG. Max size of 800K.
-            </p>
           </div>
         </div>
       </div>
 
+      {/* Personal Details */}
       <div className="mb-4">
         <h2 className="text-lg font-semibold">Personal Details</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block mb-1">Name</label>
-            <input
-              type="text"
-              name="name"
-              value={student.name}
-              onChange={handleInputChange}
-              className="input input-bordered w-full"
-            />
-          </div>
-
-          <div>
-            <label className="block mb-1">Mobile Number</label>
-            <input
-              type="text"
-              name="mobileNumber"
-              value={student.personalDetails.mobileNumber}
-              onChange={(e) =>
-                handleNestedInputChange(e, "personalDetails", "mobileNumber")
-              }
-              className="input input-bordered w-full"
-            />
-          </div>
-
-          <div>
-            <label className="block mb-1">Permanent Address</label>
-            <input
-              type="text"
-              name="permanentAddress"
-              value={student.personalDetails.permanentAddress}
-              onChange={(e) =>
-                handleNestedInputChange(
-                  e,
-                  "personalDetails",
-                  "permanentAddress"
-                )
-              }
-              className="input input-bordered w-full"
-            />
-          </div>
-
-          <div>
-            <label className="block mb-1">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={student.email}
-              onChange={handleInputChange}
-              className="input input-bordered w-full"
-            />
-          </div>
+          <input
+            type="text"
+            name="name"
+            value={student.name}
+            onChange={handleInputChange}
+            className="input input-bordered w-full"
+            placeholder="Name"
+          />
+          <input
+            type="text"
+            name="mobileNumber"
+            value={student.personalDetails.mobileNumber}
+            onChange={(e) =>
+              handleNestedInputChange(e, "personalDetails", "mobileNumber")
+            }
+            className="input input-bordered w-full"
+            placeholder="Mobile Number"
+          />
+          <input
+            type="text"
+            name="permanentAddress"
+            value={student.personalDetails.permanentAddress}
+            onChange={(e) =>
+              handleNestedInputChange(e, "personalDetails", "permanentAddress")
+            }
+            className="input input-bordered w-full"
+            placeholder="Permanent Address"
+          />
+          <input
+            type="text"
+            name="gender"
+            value={student.personalDetails.gender}
+            onChange={(e) =>
+              handleNestedInputChange(e, "personalDetails", "gender")
+            }
+            className="input input-bordered w-full"
+            placeholder="Gender"
+          />
+          <input
+            type="date"
+            name="dob"
+            value={student.personalDetails.dob.toISOString().substring(0, 10)}
+            onChange={(e) =>
+              handleNestedInputChange(e, "personalDetails", "dob")
+            }
+            className="input input-bordered w-full"
+            placeholder="Date of Birth"
+          />
+          <input
+            type="text"
+            name="bloodGroup"
+            value={student.personalDetails.bloodGroup}
+            onChange={(e) =>
+              handleNestedInputChange(e, "personalDetails", "bloodGroup")
+            }
+            className="input input-bordered w-full"
+            placeholder="Blood Group"
+          />
+          <input
+            type="text"
+            name="maritalStatus"
+            value={student.personalDetails.maritalStatus}
+            onChange={(e) =>
+              handleNestedInputChange(e, "personalDetails", "maritalStatus")
+            }
+            className="input input-bordered w-full"
+            placeholder="Marital Status"
+          />
+          <input
+            type="text"
+            name="nationality"
+            value={student.personalDetails.nationality}
+            onChange={(e) =>
+              handleNestedInputChange(e, "personalDetails", "nationality")
+            }
+            className="input input-bordered w-full"
+            placeholder="Nationality"
+          />
         </div>
       </div>
 
@@ -257,30 +372,66 @@ export default function StudentForm() {
       <div className="mb-4">
         <h2 className="text-lg font-semibold">Parent Details</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block mb-1">Father's Name</label>
-            <input
-              type="text"
-              name="fatherName"
-              value={student.parentDetails.father.name}
-              onChange={(e) =>
-                handleNestedInputChange(e, "parentDetails", "name")
-              }
-              className="input input-bordered w-full"
-            />
-          </div>
-          <div>
-            <label className="block mb-1">Mother's Name</label>
-            <input
-              type="text"
-              name="motherName"
-              value={student.parentDetails.mother.name}
-              onChange={(e) =>
-                handleNestedInputChange(e, "parentDetails", "name")
-              }
-              className="input input-bordered w-full"
-            />
-          </div>
+          <input
+            type="text"
+            name="fatherName"
+            value={student.parentDetails.father.name}
+            onChange={(e) =>
+              handleNestedNestedInputChange(
+                e,
+                "parentDetails",
+                "father",
+                "name"
+              )
+            }
+            className="input input-bordered w-full"
+            placeholder="Father's Name"
+          />
+          <input
+            type="text"
+            name="fatherContact"
+            value={student.parentDetails.father.contactNumber}
+            onChange={(e) =>
+              handleNestedNestedInputChange(
+                e,
+                "parentDetails",
+                "father",
+                "contactNumber"
+              )
+            }
+            className="input input-bordered w-full"
+            placeholder="Father's Contact Number"
+          />
+          <input
+            type="text"
+            name="fatherOccupation"
+            value={student.parentDetails.father.occupation}
+            onChange={(e) =>
+              handleNestedNestedInputChange(
+                e,
+                "parentDetails",
+                "father",
+                "occupation"
+              )
+            }
+            className="input input-bordered w-full"
+            placeholder="Father's Occupation"
+          />
+          <input
+            type="text"
+            name="motherName"
+            value={student.parentDetails.mother.name}
+            onChange={(e) =>
+              handleNestedNestedInputChange(
+                e,
+                "parentDetails",
+                "mother",
+                "name"
+              )
+            }
+            className="input input-bordered w-full"
+            placeholder="Mother's Name"
+          />
         </div>
       </div>
 
@@ -288,35 +439,42 @@ export default function StudentForm() {
       <div className="mb-4">
         <h2 className="text-lg font-semibold">Bank Details</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block mb-1">Bank Name</label>
-            <input
-              type="text"
-              name="bankName"
-              value={student.bankDetails.bankName}
-              onChange={(e) =>
-                handleNestedInputChange(e, "bankDetails", "bankName")
-              }
-              className="input input-bordered w-full"
-            />
-          </div>
-
-          <div>
-            <label className="block mb-1">IFSC Code</label>
-            <input
-              type="text"
-              name="ifscCode"
-              value={student.bankDetails.ifscCode}
-              onChange={(e) =>
-                handleNestedInputChange(e, "bankDetails", "ifscCode")
-              }
-              className="input input-bordered w-full"
-            />
-          </div>
+          <input
+            type="text"
+            name="bankName"
+            value={student.bankDetails.bankName}
+            onChange={(e) =>
+              handleNestedInputChange(e, "bankDetails", "bankName")
+            }
+            className="input input-bordered w-full"
+            placeholder="Bank Name"
+          />
+          <input
+            type="text"
+            name="ifscCode"
+            value={student.bankDetails.ifscCode}
+            onChange={(e) =>
+              handleNestedInputChange(e, "bankDetails", "ifscCode")
+            }
+            className="input input-bordered w-full"
+            placeholder="IFSC Code"
+          />
+          <input
+            type="text"
+            name="accountNumber"
+            value={student.bankDetails.accountNumber}
+            onChange={(e) =>
+              handleNestedInputChange(e, "bankDetails", "accountNumber")
+            }
+            className="input input-bordered w-full"
+            placeholder="Account Number"
+          />
         </div>
       </div>
 
-      <button className="btn btn-primary">Submit</button>
+      <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
+        Submit
+      </button>
     </form>
   );
 }

@@ -1,21 +1,25 @@
-import { teacher } from "./teacher";
-// Subschemas
+import { Teacher } from "./Teacher";
+
 export type TermTest = {
   testNumber: number;
   marks: number;
 };
 
+export type Subject = {
+  subjectName: string;
+  termTests: [TermTest, TermTest];
+  endSemesterMarks: number;
+};
+
 export type Semester = {
   semesterNumber: number;
-  termTests: TermTest[];
-  endSemesterMarks: number;
-  attendance: number;
+  subjects: Subject[];
 };
 
 export type Hostel = {
   livingAtHostel: boolean;
-  roomNumber?: string; // Optional
-  currentAddress?: string; // Optional
+  roomNumber?: string;
+  currentAddress?: string;
 };
 
 export type ParentDetails = {
@@ -57,22 +61,19 @@ export type HealthDetails = {
   };
 };
 
-// Main Student Type
 export type Student = {
   _id: string;
   name: string;
-  userName?: string; // Optional
   prn: number;
   year: string;
   division: string;
   department: string;
   email: string;
   password: string;
-  profileImageUrl?: string; // Optional
-  lgTeacher: teacher;
+  profileImageUrl?: string;
+  lgTeacher: Teacher;
 
   personalDetails: {
-    photo?: string; // Optional
     mobileNumber: string;
     permanentAddress: string;
     gender: string;
@@ -116,6 +117,6 @@ export type Student = {
 
   healthDetails: HealthDetails;
 
-  isVerified?: boolean; // Optional
-  isAdminApproved?: boolean; // Optional
+  isVerified: boolean;
+  isAdminApproved: boolean;
 };

@@ -3,7 +3,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { CircleCheck, Eye, XCircle } from "lucide-react";
 import toast from "react-hot-toast";
-import { Student } from "@/types/student";
+import { Student } from "@/types/Student";
+import { useUser } from "@/context/useAuth";
+import TableSkeleton from "@/components/Common/TableSkeleton";
 
 type OptionType = {
   value: string;
@@ -13,6 +15,7 @@ type OptionType = {
 };
 
 const AssignLG = () => {
+  const { user } = useUser();
   const [studentsData, setStudentsData] = useState<Student[]>([]);
   const [options, setOptions] = useState<OptionType[]>([]);
   const [teacher, setTeacher] = useState<any[]>([]);
@@ -24,14 +27,14 @@ const AssignLG = () => {
   );
   const [allOptionsSelected, setAllOptionsSelected] = useState(false);
 
+  if (!user) return <TableSkeleton />;
+
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const user = JSON.parse(localStorage.getItem("user") || "{}");
-        const department = user.department.toLowerCase();
         const response = await axios.post(
           "/api/users/students/getStudentsByDepartment",
-          { department }
+          { department: user.department }
         );
         if (response.data.error) {
           toast.error(response.data.error);
@@ -41,7 +44,7 @@ const AssignLG = () => {
 
         const response2 = await axios.post(
           "/api/users/teachers/getTeacherByDepartment",
-          { department }
+          { department: user.department }
         );
         if (response2.data.error) {
           toast.error(response2.data.error);
@@ -225,10 +228,8 @@ const AssignLG = () => {
                     <div className="avatar">
                       <div className="mask mask-squircle h-12 w-12">
                         <img
-                          src={`https://img.daisyui.com/images/profile/demo/${
-                            index + 1
-                          }@94.webp`}
-                          alt="Avatar Tailwind CSS Component"
+                          src={student.profileImageUrl}
+                          alt="Student Avatar"
                         />
                       </div>
                     </div>

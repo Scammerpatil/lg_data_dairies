@@ -1,4 +1,4 @@
-import { Student } from "@/types/student";
+import { Student } from "@/types/Student";
 import { useEffect, useState } from "react";
 import Table from "./Table";
 

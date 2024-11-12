@@ -1,5 +1,5 @@
-import { Student } from "./student";
-import { teacher } from "./teacher";
+import { Student } from "./Student";
+import { teacher } from "./Teacher";
 
 export type Leave = {
   _id: string;

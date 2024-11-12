@@ -4,23 +4,24 @@ import { Eye, EyeOffIcon, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import SignUp from "./SignUp";
+import { useUser } from "@/context/useAuth";
 
 const SignIn = ({ router }: { router: any }) => {
   const [passwordVisibilty, setPasswordVisibilty] = useState(false);
-  const [user, setUser] = useState({
+  const { setUser } = useUser();
+  const [userData, setUserData] = useState({
     email: "",
     password: "",
   });
   const handleSignIn = async () => {
     try {
-      const res = axios.post("/api/auth/login", user);
+      const res = axios.post("/api/auth/login", userData);
       toast.promise(
         res,
         {
           loading: "Signing in...",
           success: (data) => {
             if (data.data.success) {
-              localStorage.setItem("user", JSON.stringify(data.data.user));
               router.push(data.data.route);
               return data.data.message;
             }
@@ -75,9 +76,9 @@ const SignIn = ({ router }: { router: any }) => {
                         <input
                           type="email"
                           name="email"
-                          value={user.email}
+                          value={userData.email}
                           onChange={(e) => {
-                            setUser({ ...user, email: e.target.value });
+                            setUserData({ ...userData, email: e.target.value });
                           }}
                           placeholder="Enter your Email"
                           className="w-full rounded-sm border border-stroke bg-base-300 px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary"
@@ -93,10 +94,13 @@ const SignIn = ({ router }: { router: any }) => {
                         <OutlinedInput
                           className="h-[50px] border-stroke text-base outline-none transition-all duration-300 focus:border-primary w-full rounded-sm border border-stroke bg-base-300 px-2 pr-2 py-3 text-base-content text-body-color"
                           type={passwordVisibilty ? "text" : "password"}
-                          value={user.password}
+                          value={userData.password}
                           placeholder="Enter your Password"
                           onChange={(e) =>
-                            setUser({ ...user, password: e.target.value })
+                            setUserData({
+                              ...userData,
+                              password: e.target.value,
+                            })
                           }
                           endAdornment={
                             <InputAdornment position="end">

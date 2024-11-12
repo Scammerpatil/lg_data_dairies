@@ -1,5 +1,5 @@
 import { Leave } from "@/types/leave";
-import { Student } from "@/types/student";
+import { Student } from "@/types/Student";
 import axios from "axios";
 import toast from "react-hot-toast";
 

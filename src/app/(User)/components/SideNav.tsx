@@ -1,26 +1,26 @@
 "use client";
-import ThemeToggler from "@/components/Header/ThemeToggler";
+import React, { useEffect, useState } from "react";
 import { SideNavItem } from "@/types/types";
 import { AlignJustify, ChevronDown, ChevronRight } from "lucide-react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import { useUser } from "@/context/useAuth";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Link from "next/link";
+import ThemeToggler from "@/components/Header/ThemeToggler";
+import SideNavSkeleton from "@/components/Common/SideNav";
 
 const SideNav = ({
   router,
-  user,
   sidebar,
   children,
 }: {
   router: any;
-  user: any;
   sidebar: SideNavItem[];
   children: React.ReactNode;
 }) => {
+  const { user } = useUser();
   const handleLogout = async () => {
-    localStorage.removeItem("user");
     try {
       await axios.get("/api/auth/logout");
       toast.success("Logged out successfully");
@@ -30,10 +30,9 @@ const SideNav = ({
       router.push("/");
     }
   };
-
   const pathname = usePathname();
   const pathSegments = pathname.split("/").filter(Boolean);
-
+  if (!user) return <SideNavSkeleton />;
   return (
     <>
       <div className="drawer lg:drawer-open">
@@ -179,7 +178,7 @@ const MenuItem = ({ item }: { item: SideNavItem }) => {
   };
 
   const baseClasses =
-    "flex w-full flex-row items-center justify-between rounded-lg p-2 hover:bg-accent";
+    "flex w-full flex-row items-center justify-between rounded-lg p-2 hover:bg-accent hover:text-accent-content cursor-pointer";
   const activeClasses = "bg-base-300 text-base-content";
   const inactiveClasses =
     "text-base-content hover:text-base-content hover:bg-base-100";
@@ -218,7 +217,7 @@ const MenuItem = ({ item }: { item: SideNavItem }) => {
                     subItem.path === pathname
                       ? "font-semibold text-base-content"
                       : "text-base-content/2"
-                  } hover:bg-accent`}
+                  } hover:bg-accent hover:text-accent-content`}
                 >
                   <span>{subItem.title}</span>
                 </Link>

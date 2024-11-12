@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
       const response = await useCloudinaryUpload(
         fileStream,
         "notices",
-        file.name,
+        file.name
       );
 
       if (response) {
@@ -19,19 +19,19 @@ export async function POST(req: NextRequest) {
       } else {
         return NextResponse.json(
           { success: false, error: "Unknown error occurred during upload." },
-          { status: 500 },
+          { status: 500 }
         );
       }
     } else {
       return NextResponse.json(
         { success: false, error: "Uploaded file is not a valid Blob" },
-        { status: 400 },
+        { status: 400 }
       );
     }
-  } catch (error) {
+  } catch (error: any) {
     return NextResponse.json(
       { success: false, error: error.message },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

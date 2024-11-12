@@ -1,7 +1,9 @@
+import Image from "next/image";
+
 const MyImage = () => {
   return (
     <>
-      <svg
+      {/* <svg
         xmlns="http://www.w3.org/2000/svg"
         version="1.1"
         width="100"
@@ -340,7 +342,13 @@ const MyImage = () => {
             </g>
           </svg>
         </g>
-      </svg>
+      </svg> */}
+      <Image
+        src="https://www.rcpit.ac.in/uploads/1599837268.png"
+        alt="logo"
+        width={100}
+        height={100}
+      />
     </>
   );
 };

@@ -16,7 +16,7 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
   },
   {
     title: "Manage LGs",
-    path: "",
+    path: "/hod/manage-lgs",
     icon: <Users width="24" height="24" />,
     submenu: true,
     subMenuItems: [

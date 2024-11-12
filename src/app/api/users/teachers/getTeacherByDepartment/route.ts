@@ -7,7 +7,6 @@ dbConfig();
 export async function POST(req: NextRequest) {
   const { department } = await req.json();
   try {
-    console.log(department);
     const teacher = await Teacher.find({ department }).populate("studentUnder");
     if (!teacher) {
       return NextResponse.json(

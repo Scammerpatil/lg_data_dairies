@@ -1,13 +1,13 @@
-import { hod } from "@/types/hod";
+import { HOD } from "@/types/HOD";
 import axios from "axios";
 import { Search } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-let hodPromise: Promise<hod[]> | null = null;
-let cachedHod: hod[] | null = null;
+let hodPromise: Promise<HOD[]> | null = null;
+let cachedHod: HOD[] | null = null;
 
-const fetchHOD = (): hod[] => {
+const fetchHOD = (): HOD[] => {
   if (cachedHod) {
     return cachedHod;
   }
@@ -36,7 +36,9 @@ const TabHod = ({ fromMangeHod }: { fromMangeHod: boolean }) => {
     });
     toast.promise(response, {
       loading: "Updating HOD...",
-      success: "HOD Updated Successfully",
+      success: () => {
+        return "HOD Updated Successfully";
+      },
       error: "Error Updating HOD",
     });
 
