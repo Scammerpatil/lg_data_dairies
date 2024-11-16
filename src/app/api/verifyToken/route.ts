@@ -60,7 +60,9 @@ export async function GET(req: NextRequest) {
       });
     } else {
       if (decodedData.role === "student") {
-        const student = await Student.findOne({ email: decodedData.email });
+        const student = await Student.findOne({
+          email: decodedData.email,
+        }).populate("lgTeacher");
         if (!student) {
           return NextResponse.json(
             { error: "Student not found" },
@@ -68,7 +70,7 @@ export async function GET(req: NextRequest) {
           );
         }
         return NextResponse.json(student);
-      } else if (decodedData.role === "lgTeacher") {
+      } else if (decodedData.role === "teacher") {
         const teacher = await Teacher.findOne({
           email: decodedData.email,
         }).populate("studentUnder");

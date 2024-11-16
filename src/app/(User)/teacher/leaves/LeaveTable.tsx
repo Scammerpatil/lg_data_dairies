@@ -1,13 +1,13 @@
 import formatDate from "@/helper/DateFormatter";
 import { Leave } from "@/types/leave";
-import { User } from "@/types/user";
+import { Teacher } from "@/types/Teacher";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 let leavePromise: Promise<Leave[]> | null = null;
 let cachedLeave: Leave[] | null = null;
 
-const fetchLeave = (user: User): Leave[] => {
+const fetchLeave = (user: Teacher): Leave[] => {
   if (user === undefined) {
     return [];
   }
@@ -25,7 +25,7 @@ const fetchLeave = (user: User): Leave[] => {
   throw leavePromise;
 };
 
-const LeaveTable = ({ user }: { user: User }) => {
+const LeaveTable = ({ user }: { user: Teacher }) => {
   const leaves = fetchLeave(user);
   const handleStatusChange = async (id: string, newStatus: string) => {
     try {

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useUser } from "@/context/useAuth";
 
 const AddNotice = () => {
   const [title, setTitle] = useState("");
@@ -15,16 +16,7 @@ const AddNotice = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [disabled, setDisabled] = useState(true);
-  const [author, setAuthor] = useState("");
-  const [authorDepartment, setAuthorDepartment] = useState("");
-
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user")!);
-    if (user) {
-      setAuthor(user.name);
-      setAuthorDepartment(user.department);
-    }
-  }, []);
+  const { user } = useUser();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -74,18 +66,16 @@ const AddNotice = () => {
       toast.error("Please fill all the fields.");
       return;
     }
-
     if (tags === "important") {
       setIsImportant(true);
     }
-
     const data = {
       title,
       description,
       tags,
       isImportant,
-      author,
-      authorDepartment,
+      author: user?.name,
+      authorDepartment: user?.department,
       validTill,
       image: uploadedImageUrl,
     };

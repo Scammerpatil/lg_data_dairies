@@ -35,9 +35,4 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
     path: "/lg-coordinator/summary-report",
     icon: <BarChart width="24" height="24" />,
   },
-  {
-    title: "Messages",
-    path: "/lg-coordinator/messages",
-    icon: <MessageCircle width="24" height="24" />,
-  },
 ];

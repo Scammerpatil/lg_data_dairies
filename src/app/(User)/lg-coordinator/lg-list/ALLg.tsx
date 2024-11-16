@@ -149,7 +149,7 @@ const ALLLG = ({ user }: { user: User }) => {
                   {expandedTeacherId === teacher._id && (
                     <tr>
                       <td colSpan={6}>
-                        <table className="table table-zebra overflow-y-auto h-80">
+                        <table className="table table-zebra overflow-y-auto">
                           <thead>
                             <tr className="bg-base-300">
                               <th className="">Student Name</th>

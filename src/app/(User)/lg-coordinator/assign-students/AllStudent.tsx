@@ -1,6 +1,6 @@
 import StudentDetails from "@/components/Dialogs/StudentDetails";
+import { LGCoordinator } from "@/types/LgCoordinator";
 import { Student } from "@/types/Student";
-import { User } from "@/types/user";
 import axios from "axios";
 import { Eye, Search, Trash2, ArrowDown, ArrowUp } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -14,7 +14,7 @@ type OptionType = {
   label: number;
 };
 
-const fetchStudent = (user: User): Student[] => {
+const fetchStudent = (user: LGCoordinator): Student[] => {
   if (cachedStudent) {
     return cachedStudent;
   }
@@ -31,7 +31,7 @@ const fetchStudent = (user: User): Student[] => {
   throw studentPromise;
 };
 
-const AllStudent = ({ user }: { user: User }) => {
+const AllStudent = ({ user }: { user: LGCoordinator }) => {
   const students = fetchStudent(user);
   const [assignForm, setAssignForm] = useState({
     from: { value: "", label: 0 },
@@ -70,11 +70,9 @@ const AllStudent = ({ user }: { user: User }) => {
     };
     fetchTeacherData();
   }, [user.department]);
-
-  // Set options for students and teachers
   useEffect(() => {
     const studentOptions: OptionType[] = students
-      .filter((student) => student.lgTeacher === null) // Unassigned students
+      .filter((student) => student.lgTeacher === null)
       .map((student) => ({
         value: student._id,
         label: student.prn,
@@ -83,7 +81,7 @@ const AllStudent = ({ user }: { user: User }) => {
 
     if (teacher.length > 0) {
       const teacherOptions: OptionType[] = teacher
-        .filter((t) => t.isLG) // Only LGs
+        .filter((t) => t.isLG)
         .map((t) => ({
           value: t._id,
           label: t.name,
@@ -274,14 +272,14 @@ const AllStudent = ({ user }: { user: User }) => {
         </button>
       </div>
       <div className="overflow-x-auto">
-        <table className="table table-zebra overflow-y-auto h-screen">
+        <table className="table table-zebra overflow-y-auto">
           <thead className="bg-base-300 text-sm">
             <tr>
               <th>#</th>
               <th>Student Name</th>
               <th className="">
                 <button
-                  className="btn btn-ghost w-32 flex flex-row gap-1 items-center justify-center"
+                  className="btn btn-ghost w-32 gap-1"
                   onClick={toggleSorting}
                 >
                   PRN

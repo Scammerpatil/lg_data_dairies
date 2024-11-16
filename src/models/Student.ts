@@ -6,19 +6,22 @@ const termTestSchema = new Schema({
 });
 
 const subjectSchema = new Schema({
-  subjectName: String,
+  name: String,
   termTests: [termTestSchema],
   endSemesterMarks: Number,
 });
 
 const semesterSchema = new Schema({
   semesterNumber: Number,
+  sgpa: Number,
+  cgpa: Number,
+  totalCredits: Number,
   subjects: [subjectSchema],
   attendance: Number,
 });
 
 const hostelSchema = new Schema({
-  livingAtHostel: Boolean,
+  livingAtHostel: String,
   roomNumber: String,
   currentAddress: String,
 });
@@ -64,9 +67,7 @@ const healthSchema = new Schema({
 
 const studentSchema = new Schema({
   name: { type: String, required: true },
-  userName: { type: String },
   prn: { type: Number, unique: true, required: true },
-  rollNo: { type: Number },
   year: { type: String, required: true },
   division: { type: String, required: true },
   department: { type: String, required: true },
@@ -75,7 +76,6 @@ const studentSchema = new Schema({
   profileImageUrl: { type: String },
   lgTeacher: { type: Schema.Types.ObjectId, ref: "Teacher", default: null },
   personalDetails: {
-    photo: String,
     mobileNumber: String,
     permanentAddress: String,
     gender: String,

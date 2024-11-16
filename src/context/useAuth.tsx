@@ -26,12 +26,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User>(null);
 
-  useEffect(() => {
-    console.log("User state has changed:", user);
-  }, [user]);
+  useEffect(() => {}, [user]);
 
   const handleSetUser = (newUser: User) => {
-    console.log("Setting new user:", newUser);
     setUser(newUser);
   };
 
@@ -47,6 +44,5 @@ export const useUser = () => {
   if (!context) {
     throw new Error("useUser must be used within a UserProvider");
   }
-  console.log("useUser accessed with context:", context);
   return context;
 };

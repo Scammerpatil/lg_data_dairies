@@ -1,12 +1,12 @@
-import { teacher } from "@/types/Teacher";
-import { User } from "@/types/user";
+import { LGCoordinator } from "@/types/LgCoordinator";
+import { Teacher } from "@/types/Teacher";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-var teacherPromise: Promise<teacher[]> | null = null;
-var cachedTeacher: teacher[] | null = null;
+var teacherPromise: Promise<Teacher[]> | null = null;
+var cachedTeacher: Teacher[] | null = null;
 
-const fetchTeacher = (user: User): teacher[] => {
+const fetchTeacher = (user: LGCoordinator): Teacher[] => {
   if (cachedTeacher) {
     return cachedTeacher;
   }
@@ -24,11 +24,11 @@ const fetchTeacher = (user: User): teacher[] => {
   throw teacherPromise;
 };
 
-const Summary = ({ user }: { user: User }) => {
+const Summary = ({ user }: { user: LGCoordinator }) => {
   const teachers = fetchTeacher(user);
-  const [sybtech, setSYBTech] = useState<teacher[]>([]);
-  const [tybtech, setTYBTech] = useState<teacher[]>([]);
-  const [btech, setBTech] = useState<teacher[]>([]);
+  const [sybtech, setSYBTech] = useState<Teacher[]>([]);
+  const [tybtech, setTYBTech] = useState<Teacher[]>([]);
+  const [btech, setBTech] = useState<Teacher[]>([]);
 
   useEffect(() => {
     // Filter teachers based on the year

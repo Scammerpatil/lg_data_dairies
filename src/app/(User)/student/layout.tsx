@@ -1,12 +1,15 @@
 "use client";
 import ToastContainer from "@/components/ToastContainer";
 import SideNav from "../components/SideNav";
-import ScrollToTop from "@/components/ScrollToTop";
 import { SIDENAV_ITEMS } from "./constant";
-import { UserProvider } from "@/context/useAuth";
 import { useRouter } from "next/navigation";
 import { Inter } from "next/font/google";
 import "@/app/style.css";
+import ScrollToTop from "@/components/ScrollToTop";
+import { UserProvider, useUser } from "@/context/useAuth";
+import { useEffect } from "react";
+import axios from "axios";
+import { Student } from "@/types/Student";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +23,22 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
 
 const MainContent = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
+  const { user, setUser } = useUser();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get("/api/verifyToken");
+        setUser(response.data as Student);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (!user) {
+      fetchUser();
+    }
+  }, []);
+
   return (
     <html suppressHydrationWarning lang="en">
       <head>
@@ -27,7 +46,7 @@ const MainContent = ({ children }: { children: React.ReactNode }) => {
       </head>
       <body className={`${inter.className}`}>
         <ToastContainer />
-        <SideNav router={router} user={user} sidebar={SIDENAV_ITEMS ?? []}>
+        <SideNav router={router} sidebar={SIDENAV_ITEMS ?? []}>
           {children}
         </SideNav>
         <ScrollToTop />

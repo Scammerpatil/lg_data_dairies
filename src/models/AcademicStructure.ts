@@ -10,7 +10,7 @@ const SubjectSchema = new Schema({
 });
 
 const SemesterSchema = new Schema({
-  semesterNumber: { type: Number, required: true, unique: true },
+  semesterNumber: { type: Number, required: true },
   subjects: [SubjectSchema],
 });
 

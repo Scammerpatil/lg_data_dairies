@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import DetailSkeleton from "./DetailSkeleton";
 import TabAccount from "./TabAccount";
+import TabEngineering from "./TabEngineering";
+import TabProtfolio from "./TabPortfolioDetails";
 
 const StudentDetails = () => {
   return (
@@ -37,9 +39,9 @@ const StudentDetails = () => {
           role="tabpanel"
           className="tab-content bg-base-100 border-base-300 rounded-box p-6"
         >
-          {/* <Suspense fallback={<TableSkeleton />}>
-            <TabTeacher fromTeacherTab={false} />
-          </Suspense> */}
+          <Suspense fallback={<DetailSkeleton />}>
+            <TabEngineering />
+          </Suspense>
         </div>
 
         <input
@@ -53,9 +55,9 @@ const StudentDetails = () => {
           role="tabpanel"
           className="tab-content bg-base-100 border-base-300 rounded-box p-6"
         >
-          {/* <Suspense fallback={<TableSkeleton />}>
-            <TabStudent fromStudentTab={false} />
-          </Suspense> */}
+          <Suspense fallback={<DetailSkeleton />}>
+            <TabProtfolio />
+          </Suspense>
         </div>
       </div>
     </>

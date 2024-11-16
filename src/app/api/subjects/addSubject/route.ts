@@ -18,8 +18,10 @@ export async function POST(req: NextRequest) {
   let departmentExists = await AcademicStructure.findOne({
     departmentName: department,
   });
+  console.log(departmentExists);
 
   if (!departmentExists) {
+    console.log("Here we go again!!!");
     const newDepartment = new AcademicStructure({
       departmentName: department,
       semesters: [
@@ -35,6 +37,7 @@ export async function POST(req: NextRequest) {
       ],
     });
     await newDepartment.save();
+    console.log(newDepartment);
     return NextResponse.json({ message: "Subject added successfully" });
   } else {
     let semesterExists = departmentExists.semesters.find(

@@ -4,6 +4,7 @@ import dbConfig from "@/middlewares/db.config";
 import Student from "@/models/Student";
 import Teacher from "@/models/Teacher";
 import HOD from "@/models/HOD";
+import AcademicStructure from "@/models/AcademicStructure";
 
 dbConfig();
 
@@ -23,6 +24,11 @@ export async function POST(req: NextRequest) {
       division,
       year,
     } = body;
+
+    const academicStructure = await AcademicStructure.find({
+      departmentName: department,
+    });
+    // console.log(academicStructure[0].semesters);
 
     if (!name || !email || !department || !role || !password) {
       return NextResponse.json(
@@ -86,6 +92,7 @@ export async function POST(req: NextRequest) {
         role: "student",
         password: hashedPassword,
         isVerified: emailVerified,
+        engineeringDetails: { semesters: academicStructure[0].semesters },
         prn,
       });
       const newStudent = await student.save();

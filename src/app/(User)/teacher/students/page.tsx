@@ -5,20 +5,18 @@ import toast from "react-hot-toast";
 import { Student } from "@/types/Student";
 import TableSkeleton from "@/components/Common/TableSkeleton";
 import TableStudent from "./TableStudent";
-import { User } from "@/types/user";
+import { useUser } from "@/context/useAuth";
+import { Teacher } from "@/types/Teacher";
 
 const Students = () => {
-  const [user, setUser] = useState<User | null>(null);
   const [students, setStudents] = useState<Student[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [options, setOptions] = useState<Student[]>([]);
+  const { user }: Teacher = useUser();
 
   useEffect(() => {
     const fetchStudents = async () => {
-      const user = JSON.parse(localStorage.getItem("user")!);
-      if (user) {
-        setUser(user);
-      }
+      if (!user) return;
       setStudents(user.studentUnder);
       const response = await axios.post(
         "/api/users/students/getStudentsByDepartment",
@@ -54,9 +52,9 @@ const Students = () => {
 
   return (
     <div className="min-h-screen p-4">
-      <h1 className="mb-4 text-2xl font-bold">Approve Local Guardians</h1>
+      <h1 className="mb-4 text-2xl font-bold">Student Under {user.name}</h1>
       <div className="w-ful flex flex-row gap-4">
-        <label className="form-control w-full max-w-xs">
+        {/* <label className="form-control w-full max-w-xs">
           <div className="label">
             <span className="label-text">Student Name</span>
           </div>
@@ -82,7 +80,7 @@ const Students = () => {
           onClick={handleAssignLG}
         >
           Assign
-        </button>
+        </button> */}
       </div>
 
       <div className="flex">

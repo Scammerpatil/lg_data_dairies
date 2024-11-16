@@ -9,6 +9,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import { UserProvider, useUser } from "@/context/useAuth";
 import { useEffect } from "react";
 import axios from "axios";
+import { LGCoordinator } from "@/types/LgCoordinator";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,7 +28,9 @@ const MainContent = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get("/api/localguardian/verifyToken");
+        const response = await axios.get("/api/verifyToken");
+        console.log(response.data);
+        setUser(response.data.data as LGCoordinator);
       } catch (error) {
         console.log(error);
       }

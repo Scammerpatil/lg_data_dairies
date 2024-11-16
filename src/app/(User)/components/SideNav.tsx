@@ -178,7 +178,7 @@ const MenuItem = ({ item }: { item: SideNavItem }) => {
   };
 
   const baseClasses =
-    "flex w-full flex-row items-center justify-between rounded-lg p-2 hover:bg-accent hover:text-accent-content cursor-pointer";
+    "flex w-full flex-row items-center justify-between rounded-lg p-2 hover:bg-base hover:text-accent-content cursor-pointer";
   const activeClasses = "bg-base-300 text-base-content";
   const inactiveClasses =
     "text-base-content hover:text-base-content hover:bg-base-100";

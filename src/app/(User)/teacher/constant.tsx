@@ -26,7 +26,6 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
     icon: <Clipboard width="24" height="24" />,
     submenu: true,
     subMenuItems: [
-      { title: "Add Marks", path: "/teacher/details/marks" },
       { title: "Add Attendance", path: "/teacher/details/attendance" },
     ],
   },
@@ -44,11 +43,6 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
       { title: "Add Notice", path: "/teacher/notices/add" },
       { title: "View Notices", path: "/teacher/notices/view" },
     ],
-  },
-  {
-    title: "Messages",
-    path: "/teacher/messages",
-    icon: <Mail width="24" height="24" />,
   },
   {
     title: "Help",

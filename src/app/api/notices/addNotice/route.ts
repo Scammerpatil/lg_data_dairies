@@ -15,16 +15,6 @@ export async function POST(req: NextRequest) {
     image,
     validTill,
   } = await req.json();
-  console.log({
-    title,
-    description,
-    tags,
-    isImportant,
-    author,
-    authorDepartment,
-    image,
-    validTill,
-  });
 
   const validTillDate = validTill ? new Date(validTill) : null;
 
@@ -63,6 +53,7 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   } catch (error: any) {
+    console.log(error);
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

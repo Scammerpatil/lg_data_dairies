@@ -1,5 +1,4 @@
 "use client";
-
 import ThemeToggler from "@/components/Header/ThemeToggler";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -8,28 +7,18 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import MyImage from "@/components/Header/Image";
 import { ChevronRight } from "lucide-react";
+import { useUser } from "@/context/useAuth";
 
 const DesktopHeader = () => {
   const router = useRouter();
   const pathname = usePathname();
   const pathSegments = pathname.split("/").filter(Boolean);
-  const [user, setUser] = useState({
-    profileImage: "",
-    name: "",
-  });
-
+  const { user } = useUser();
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user")!);
-    if (!storedUser) {
-      router.push("/signin");
-    }
-    setUser(storedUser);
-  }, []);
-
+    console.log(user);
+  }, [user]);
   const handleLogout = async () => {
-    localStorage.removeItem("user");
     const response = axios.get("/api/auth/logout");
-    router.push("/signin");
     toast.promise(response, {
       loading: "Logging out...",
       success: () => {

@@ -6,18 +6,22 @@ export type TermTest = {
 };
 
 export type Subject = {
-  subjectName: string;
-  termTests: [TermTest, TermTest];
+  name: string;
+  termTests: TermTest[];
   endSemesterMarks: number;
 };
 
 export type Semester = {
   semesterNumber: number;
+  sgpa: number;
+  cgpa: number;
+  totalCredits: number;
   subjects: Subject[];
+  attendance: number;
 };
 
 export type Hostel = {
-  livingAtHostel: boolean;
+  livingAtHostel: string;
   roomNumber?: string;
   currentAddress?: string;
 };
@@ -64,16 +68,19 @@ export type HealthDetails = {
 export type Student = {
   _id: string;
   name: string;
+  userName?: string;
   prn: number;
+  rollNo?: number;
   year: string;
   division: string;
   department: string;
   email: string;
   password: string;
   profileImageUrl?: string;
-  lgTeacher: Teacher;
+  lgTeacher?: Teacher;
 
   personalDetails: {
+    photo?: string;
     mobileNumber: string;
     permanentAddress: string;
     gender: string;

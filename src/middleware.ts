@@ -15,15 +15,15 @@ const verifyToken = async (token: string) => {
       body: JSON.stringify({ token }),
     });
 
-    const contentType = response.headers.get("content-type");
-    if (!response.ok)
+    if (!response.ok) {
       console.log("Error verifying token:", response.statusText);
+      return null;
+    }
 
+    const contentType = response.headers.get("content-type");
     if (contentType && contentType.includes("application/json")) {
-      const data = await response.json();
-      return data;
+      return await response.json();
     } else {
-      const text = await response.text();
       throw new Error("Response was not JSON");
     }
   } catch (error) {
@@ -47,64 +47,61 @@ export async function middleware(req: NextRequest) {
   // Check cache for token
   if (tokenCache[token]) {
     const cachedData = tokenCache[token];
-
-    // Check if the cached data is still valid (not expired)
-    const now = Date.now();
-    if (now < cachedData.expiry) {
+    if (Date.now() < cachedData.expiry) {
       const { role, isAdminApproved } = cachedData.data;
-
-      if (!isRoleAuthorized(role, pathname)) {
-        const path = role + "/dashboard";
-        return NextResponse.redirect(new URL(path, req.nextUrl.origin));
-      }
 
       if (isPublicPath) {
         return handleRedirect(role, isAdminApproved, req);
-      } else {
-        if (!isAdminApproved) {
-          return NextResponse.redirect(
-            new URL("/not-approved", req.nextUrl.origin)
-          );
-        }
-        return NextResponse.next();
       }
+
+      if (!isRoleAuthorized(role, pathname)) {
+        return NextResponse.redirect(
+          new URL(`/${role}/dashboard`, req.nextUrl.origin)
+        );
+      }
+
+      if (!isAdminApproved) {
+        return NextResponse.redirect(
+          new URL("/not-approved", req.nextUrl.origin)
+        );
+      }
+
+      return NextResponse.next();
     }
   }
 
-  // If no session, verify the token
   if (token) {
     const user = await verifyToken(token);
     if (user) {
       const { role, isAdminApproved, expiresIn } = user.data;
-
-      // Cache the user data with an expiry time (based on token expiration)
-      const expiryTime = Date.now() + expiresIn * 1000; // expiresIn is in seconds
+      const expiryTime = Date.now() + expiresIn * 1000;
       tokenCache[token] = {
         data: { role, isAdminApproved },
         expiry: expiryTime,
       };
 
-      if (!isRoleAuthorized(role, pathname)) {
-        var path = role + "/dashboard";
-        return NextResponse.redirect(new URL(path, req.nextUrl.origin));
-      }
-
       if (isPublicPath) {
         return handleRedirect(role, isAdminApproved, req);
-      } else {
-        if (!isAdminApproved) {
-          return NextResponse.redirect(
-            new URL("/not-approved", req.nextUrl.origin)
-          );
-        }
-        return NextResponse.next();
       }
+
+      if (!isRoleAuthorized(role, pathname)) {
+        return NextResponse.redirect(
+          new URL(`/${role}/dashboard`, req.nextUrl.origin)
+        );
+      }
+
+      if (!isAdminApproved) {
+        return NextResponse.redirect(
+          new URL("/not-approved", req.nextUrl.origin)
+        );
+      }
+
+      return NextResponse.next();
     }
 
     return NextResponse.redirect(new URL("/", req.nextUrl.origin));
   }
 
-  // Redirect to home if not logged in and accessing a protected page
   if (!isPublicPath && !token) {
     return NextResponse.redirect(new URL("/", req.nextUrl.origin));
   }
@@ -112,33 +109,23 @@ export async function middleware(req: NextRequest) {
   return NextResponse.next();
 }
 
-// Helper function to handle redirection based on role
 function handleRedirect(
   role: string,
   isAdminApproved: boolean,
   req: NextRequest
 ) {
-  let redirectPath = "/";
-  switch (role) {
-    case "student":
-      redirectPath = isAdminApproved ? "/student/dashboard" : "/not-approved";
-      break;
-    case "teacher":
-      redirectPath = isAdminApproved ? "/teacher/dashboard" : "/not-approved";
-      break;
-    case "hod":
-      redirectPath = isAdminApproved ? "/hod/dashboard" : "/not-approved";
-      break;
-    case "admin":
-      redirectPath = "/admin/dashboard";
-      break;
-    default:
-      redirectPath = "/";
-  }
+  const paths = {
+    student: "/student/dashboard",
+    teacher: "/teacher/dashboard",
+    hod: "/hod/dashboard",
+    admin: "/admin/dashboard",
+    "lg-coordinator": "/lg-coordinator/dashboard",
+  };
+
+  const redirectPath = isAdminApproved ? paths[role] || "/" : "/not-approved";
   return NextResponse.redirect(new URL(redirectPath, req.nextUrl.origin));
 }
 
-// Function to check if the role matches the requested path
 function isRoleAuthorized(role: string, pathname: string) {
   const roleBasedPaths: { [key: string]: RegExp } = {
     student: /^\/student/,
@@ -148,8 +135,7 @@ function isRoleAuthorized(role: string, pathname: string) {
     "lg-coordinator": /^\/lg-coordinator/,
   };
 
-  const rolePathRegex = roleBasedPaths[role];
-  return rolePathRegex ? rolePathRegex.test(pathname) : false;
+  return roleBasedPaths[role]?.test(pathname) || false;
 }
 
 export const config = {
@@ -160,6 +146,7 @@ export const config = {
     "/contact",
     "/about",
     "/not-found",
+    // "/not-approved",
     "/student/:path*",
     "/teacher/:path*",
     "/hod/:path*",
