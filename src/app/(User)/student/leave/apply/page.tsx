@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Student } from "@/types/Student";
-import { User } from "@/types/user";
+import { useUser } from "@/context/useAuth";
 
 const leaveTypes = [
   { value: "Sick", label: "Sick Leave" },
@@ -18,30 +18,7 @@ const LeaveApplicationPage: React.FC = () => {
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [reason, setReason] = useState<string>("");
-  const [student, setStudent] = useState<User>({
-    _id: "",
-    name: "",
-    email: "",
-    role: "",
-    department: "",
-    lgTeacher: {
-      _id: "",
-      name: "",
-      email: "",
-      role: "",
-      department: "",
-      isLG: false,
-      isAdminApproved: false,
-      phoneNo: "",
-      profileImageUrl: "",
-      studentUnder: [],
-    },
-  });
-
-  useEffect(() => {
-    const student = JSON.parse(localStorage.getItem("user") || "null");
-    setStudent(student);
-  }, []);
+  const { user } = useUser() as unknown as Student;
 
   const handleApplyLeave = async () => {
     if (!leaveType || !startDate || !endDate || !reason.trim()) {
@@ -52,15 +29,15 @@ const LeaveApplicationPage: React.FC = () => {
       toast.error("End date should be after the start date.");
       return;
     }
-    if (student.lgTeacher?._id === undefined) {
+    if (user.lgTeacher?._id === undefined) {
       toast.error("You don't have a teacher assigned. Please contact admin.");
       return;
     }
 
     // Prepare data
     const leaveData = {
-      studentId: student._id,
-      teacherId: student.lgTeacher?._id,
+      studentId: user._id,
+      teacherId: user.lgTeacher?._id,
       leaveType,
       startDate,
       endDate,

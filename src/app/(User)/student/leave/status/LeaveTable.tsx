@@ -10,6 +10,7 @@ const fetchLeave = (student: Student): Leave[] => {
   if (cachedLeave) {
     return cachedLeave;
   }
+  console.log(student);
   if (student._id === undefined) {
     return [];
   }
@@ -27,7 +28,6 @@ const fetchLeave = (student: Student): Leave[] => {
 
 const LeaveTable = ({ student }: { student: Student }) => {
   const leaves = fetchLeave(student);
-  console.log(leaves);
   const handleDelete = async (leaveId: string) => {
     if (!window.confirm("Are you sure you want to delete this leave?")) return;
     try {

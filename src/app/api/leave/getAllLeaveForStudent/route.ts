@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
           success: false,
           message: "No leave data found for this student.",
         },
-        { status: 404 }
+        { status: 402 }
       );
     }
   } catch (error) {
